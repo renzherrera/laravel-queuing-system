@@ -23,7 +23,10 @@
         <td><span>Staff</span></td>
 
         @endif
-        <td>{{$user->counter_name}}</td>
+
+        <td>
+        {{$user->counter_name}}
+        </td>
 
         @if ($user->is_active)
         <td><span class="badge badge-success">Active</span></td>

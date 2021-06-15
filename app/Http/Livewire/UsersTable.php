@@ -16,6 +16,7 @@ class UsersTable extends Component
         ->select('users.id', 'users.name', 'users.email','users.is_admin','counters.counter_name','users.is_active')
         ->paginate(5);
 
+         
         return view('livewire.users-table', compact('users'));
     }
 }

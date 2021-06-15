@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQueuesTable extends Migration
+class CreateCallsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateQueuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('queues', function (Blueprint $table) {
-            $table->id('queue_id');
-            $table->foreignId('service_id')->constrained();
-            $table->integer('ticket_number');
-            $table->boolean('called')->default(false);
-            $table->boolean('missed')->default(false);
+        Schema::create('calls', function (Blueprint $table) {
+            $table->id('call_id');
+            $table->foreignId('queue_id')->constrained();
+            $table->foreignId('counter_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateQueuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('queues');
+        Schema::dropIfExists('calls');
     }
 }

@@ -20,7 +20,12 @@
                         <div class="container text-center">
                             @foreach ($services as $service)
                             @if ($service->is_active)
-                            <a class="btn btn-queue btn-info mb-2 ml-1" href="{{route('admin.queues.create')}}">{{$service->name}}</a>
+                            <form action="{{route('admin.queues.store',$service)}}" method="POST">
+                                @csrf
+                                <input value="{{$service->id}}" type="hidden" name="id">
+                                <input value="{{$service->default_number}}" type="hidden" name="default_number">
+                            <button class="btn btn-queue btn-info mb-2 ml-1" type="submit">{{$service->name}}</a>
+                            </form>
                             @endif
                             @endforeach
             

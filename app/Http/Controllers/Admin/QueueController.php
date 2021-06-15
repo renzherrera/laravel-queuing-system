@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreQueueRequest;
 use App\Models\Department;
+use App\Models\Queue;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QueueController extends Controller
 {
+    public $serviceId = 1,  $customerId=1;
+
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +53,31 @@ class QueueController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $queue = Queue::select('queue_id','ticket_number','created_at')
+        ->where('ticket_number', '>', $request->default_number)
+        ->where('service_id', '=', $request->id)
+        ->where('created_at','>=', Carbon::today())
+        ->get();
+        if($queue->count() < 1){
+        //get default number for first queues
+            Queue::create([
+                'service_id' => $request->id,
+                'ticket_number' => $request->default_number + 1,
+                'customer_id' => $this->customerId,
+            
+            ]);
+        } elseif($queue->count() > 0){
+            Queue::create([
+                'service_id' => $request->id,
+                'ticket_number' => $queue->max('ticket_number') + 1,
+                'customer_id' => $this->customerId,
+            
+            ]);
+        }
+      
+        return redirect()->route('admin.queues.create');  
+      
+
     }
 
     /**
@@ -58,7 +88,9 @@ class QueueController extends Controller
      */
     public function show($department)
     {
-        $services = Service::select('id', 'name','is_active','department_id')
+     
+
+        $services = Service::select('id', 'name','is_active','department_id','default_number')
         ->where('department_id', '=', $department)
         ->get();
         return view('admin.queues.show',compact('services'));

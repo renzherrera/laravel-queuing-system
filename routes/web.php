@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CallController;
 use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PageController;
@@ -39,5 +40,6 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('counters', CounterController::class);
          Route::resource('users', UserController::class);
          Route::resource('queues', QueueController::class);
+         Route::resource('calls', CallController::class);
     });
 });

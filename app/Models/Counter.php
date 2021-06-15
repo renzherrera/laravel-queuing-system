@@ -14,4 +14,9 @@ class Counter extends Model
         'service_id',
         'is_active',
     ];
+
+    public function services()
+{
+    return $this->belongsTo(Service::class, 'service_id', 'id');
+}
 }

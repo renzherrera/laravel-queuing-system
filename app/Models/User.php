@@ -51,4 +51,8 @@ class User extends Authenticatable
 {
     $this->attributes['password'] = Hash::make($password);
 }
+        public function counters()
+        {
+            return $this->hasOne(Counter::class, 'id', 'counter_id');
+        }
 }
