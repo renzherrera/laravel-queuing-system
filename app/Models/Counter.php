@@ -16,7 +16,12 @@ class Counter extends Model
     ];
 
     public function services()
-{
-    return $this->belongsTo(Service::class, 'service_id', 'id');
-}
+    {
+        return $this->belongsTo(Service::class, 'service_id', 'id');
+    }
+
+    public function queues()
+    {
+        return $this->hasMany(Queue::class, 'queue_id', 'queue_id');
+    }
 }

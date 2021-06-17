@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CallController;
+use App\Http\Controllers\Admin\ClientDisplayController;
 use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PageController;
@@ -34,6 +35,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware'=> 'auth'], function(){
     Route::group(['prefix' => 'admin', 'as'=> 'admin.'],function(){
+        Route::get('displays/departments', [ClientDisplayController::class, 'showDepartments'])->name('displays.departments');
+        Route::get('admin.displays/services/{department}', [ClientDisplayController::class, 'showServices'])->name('displays.services');
+        Route::post('admin.displays/services/{service}/ticket-details/processing', [ClientDisplayController::class, 'storeQueue'])->name('displays.store');
+        Route::post('admin.displays/services/{service}/ticket-details', [ClientDisplayController::class, 'getTicketDetails'])->name('displays.ticket');
          Route::resource('pages', PageController::class);
          Route::resource('departments', DepartmentController::class);
          Route::resource('services', ServiceController::class);
@@ -41,5 +46,8 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('users', UserController::class);
          Route::resource('queues', QueueController::class);
          Route::resource('calls', CallController::class);
+    
+         
+
     });
 });

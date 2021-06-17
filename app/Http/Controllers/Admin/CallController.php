@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Counter;
 use App\Models\Queue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,10 @@ class CallController extends Controller
      */
     public function index()
     {
-        //
+        $counters = Counter::all(['id', 'counter_name']);
+
+        return view('livewire.display-queue',compact('counters'));
+
     }
 
     /**
@@ -51,7 +55,8 @@ class CallController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('admin.calls.display-calls');
+        
     }
 
     /**

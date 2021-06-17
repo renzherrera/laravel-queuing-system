@@ -19,6 +19,7 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->string('prefix');
             $table->integer('default_number');
+            $table->integer('avg_time_waiting');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

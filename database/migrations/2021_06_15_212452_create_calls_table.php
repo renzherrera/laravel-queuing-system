@@ -14,6 +14,7 @@ class CreateCallsTable extends Migration
     public function up()
     {
         Schema::create('calls', function (Blueprint $table) {
+
             $table->id('call_id');
             $table->foreignId('queue_id')->constrained();
             $table->foreignId('counter_id')->constrained();

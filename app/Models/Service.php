@@ -15,4 +15,9 @@ class Service extends Model
         'default_number',
         'is_active',
     ];
+
+    public function queues(){
+        return $this->Many(Queue::class, 'service_id', 'id');
+
+    }
 }

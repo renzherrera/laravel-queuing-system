@@ -39,7 +39,7 @@
                         <div class="container text-center">
                             @foreach ($services as $service)
                             @if ($service->is_active)
-                            <form action="{{route('admin.queues.store',$service)}}" method="POST">
+                            <form action="{{route('admin.displays.ticket',$service)}}" method="POST">
                                 @csrf
                                 <input value="{{$service->id}}" type="hidden" name="id">
                                 <input value="{{$service->default_number}}" type="hidden" name="default_number">
@@ -53,7 +53,7 @@
                 </div>
         </div>
 
-        <div id="print" class="card" style="display: none">
+        {{-- <div id="print" class="card" style="display: none">
                 <div class="card-body">
                   
                         <div class="container text-center">
@@ -69,36 +69,10 @@
 
                         </div>
                 </div>
-        </div>
+        </div> --}}
 
 </div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
 
-function printing() {
-    var x = document.getElementById("print");
-    var y = document.getElementById("noprint");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            y.style.display = "none";
-        } else {
-            y.style.display = "block";
-            x.style.display = "none";
-        }
-    window.print();
-
-    Swal.fire({
-
-    title: 'Printing',
-    html: '<h1 class="bg-success">Ticket # {{$ticketNumber + 1}}</h1> <br> <h2>Time created: {{now()->format('g:i:s a')}}</h2>',    
-    imageUrl: '{{ asset('storage/images/printing.gif')}}',
-    imageAlt: 'Printer GIF',
-    showConfirmButton: false,
-    allowOutsideClick: false,
-})
-
-}
-
-</script>
 @endsection

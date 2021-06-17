@@ -11,8 +11,7 @@
     .btn-title{
         text-align: center
     }
-   </style>
-
+    </style>
         <div class="card">
             <div class="card-header text-center"><h1>{{ __('Choose a department') }}</h1></div>
                 <div class="card-body">
@@ -20,9 +19,9 @@
                         <div class="container text-center">
                             @foreach ($departments as $department)
                             @if ($department->is_active)
-                            <a class="btn btn-queue btn-info mb-2 ml-1" href="{{route('admin.queues.show',$department->id)}}">{{$department->department_name}}</a>
+                            <a class="btn btn-queue btn-info mb-2 ml-1" href="{{route('admin.displays.services',$department->id)}}">{{$department->department_name}}</a>
                             @endif
-                            @endforeach
+         @endforeach
             
                         </div>  
                 </div>
