@@ -16,8 +16,16 @@ class Service extends Model
         'is_active',
     ];
 
-    public function queues(){
-        return $this->Many(Queue::class, 'service_id', 'id');
+    public function getQueueRelation(){
+                                        //foreing key of queue / id of owner
+        return $this->hasMany(Queue::class, 'service_id', 'id');
 
     }
+
+    public function getCounterRelation()
+    {
+        return $this->belongsTo(Counter::class, 'service_id', 'id');
+    }
+    
+
 }

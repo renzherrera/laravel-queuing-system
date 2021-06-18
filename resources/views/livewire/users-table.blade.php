@@ -25,7 +25,7 @@
         @endif
 
         <td>
-        {{$user->counter_name}}
+        {{$user->counter_id}}
         </td>
 
         @if ($user->is_active)

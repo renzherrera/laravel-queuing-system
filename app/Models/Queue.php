@@ -17,8 +17,8 @@ class Queue extends Model
 
     ];
 
-    public function services(){
-        return $this->belongsTo(Service::class, 'id', 'queue_id');
+    public function getServiceRelation(){
+        return $this->belongsTo(Service::class, 'service_id', 'id');
 
     }
 }

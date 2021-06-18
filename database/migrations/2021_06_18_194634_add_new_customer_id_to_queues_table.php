@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignIdToQueuesTable extends Migration
+class AddNewCustomerIdToQueuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddForeignIdToQueuesTable extends Migration
      */
     public function up()
     {
+       
         Schema::table('queues', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->foreignId('customer_id')->constrained();
+            $table->integer('customer_id')->unsigned()->default(1);
+
 
         });
     }

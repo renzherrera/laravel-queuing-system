@@ -16,7 +16,9 @@ class CreateCountersTable extends Migration
         Schema::create('counters', function (Blueprint $table) {
             $table->id();
             $table->string('counter_name');
-            $table->foreignId('service_id')->constrained();
+            $table->unsignedBigInteger('service_id')->index()->nullable();
+            $table->foreign('service_id')->references('id')->on('services')->onUpdate('cascade')->onDelete('cascade');
+
             $table->boolean('is_active')->default(true);
         });
     }

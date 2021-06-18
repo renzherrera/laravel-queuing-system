@@ -3,7 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Call;
+use App\Models\Counter;
 use App\Models\Queue;
+use App\Models\Service;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,41 +15,43 @@ use Livewire\Component;
 class CallController extends Component
 {
     public $queue_id;
+
+    public $serviceId;
+    public function mount(){
+
+    }
     public function render()
     {
-        if(Auth::user()->counter_id) {
 
-            //for the voice speaker // calling previous number fixed
-            $firstqueue = Queue::select('queue_id','ticket_number','created_at')
-            ->where('service_id', '=', Auth::user()->counters->services->id)
+
+
+            $userCounter = User::with('counters')
+            ->first();
+
+            $firstqueue = Queue::with('getServiceRelation')
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->first();
+
             //get last queue result
-            $queue = Queue::select('queue_id','ticket_number')
-            ->where('service_id', '=', Auth::user()->counters->services->id)
-            ->where('called', '=', 1)
+
+            $queue = Queue::with('getServiceRelation')
+            ->where('called', '=', true)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->orderBy('queue_id','desc')
             ->first();
-       
+
             //get all queues not called
-            $queues = Queue::where('service_id', '=', Auth::user()->counters->services->id)
+            $waitingQueues = Queue::with('getServiceRelation')
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->get();
 
-            //get all served/called queue
-            $queueServed = Queue::where('service_id', '=', Auth::user()->counters->services->id)
-            ->where('called', '=', true)
-            ->where('missed', '=', false)
-            ->where('created_at','>=', Carbon::today())
-            ->get();
-         
-            //get total served
+
+            //get total attempts
             $calls = Call::where('queue_id', '=', $this->queue_id)
             ->where('created_at','>=', Carbon::today())
             ->get();
@@ -68,29 +73,26 @@ class CallController extends Component
             $this->queue_id = $lastcall->queue_id;
         }
             
-
-        }
-        return view('livewire.call-controller',compact('queue','queues','queueServed','calls','firstqueue','lastcall'));
+        return view('livewire.call-controller',compact('queue','waitingQueues','calls','firstqueue','lastcall','userCounter'));
     }
 
     public function call(Request $request) {
-        sleep(2);
-
-        if(Auth::user()->counter_id) {
-            $queue = Queue::select('queue_id','ticket_number','created_at')
-            ->where('service_id', '=', Auth::user()->counters->services->id)
+            sleep(2);
+            $queue = Queue::with('getServiceRelation')
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->first();
+            
     
-            $queues = Queue::where('service_id', '=', Auth::user()->counters->services->id)
+            $queues = Queue::with('getServiceRelation')
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->get();
-    
-            $queueServed = Queue::where('service_id', '=', Auth::user()->counters->services->id)
+            
+           
+            $queueServed = Queue::where('service_id', '=', $this->serviceId)
             ->where('called', '=', true)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
@@ -113,7 +115,6 @@ class CallController extends Component
             }
          
          
-        }
 
         return view('livewire.call-controller',compact('queue','queues','queueServed'));
 

@@ -12,9 +12,14 @@ class UsersTable extends Component
 
     public function render()
     {
-        $users = User::join('counters','users.counter_id','=','counters.id')
-        ->select('users.id', 'users.name', 'users.email','users.is_admin','counters.counter_name','users.is_active')
+
+        // $users = User::join('counters','users.counter_id','=','counters.id')
+        // ->select('users.id', 'users.name', 'users.email','users.is_admin','counters.counter_name','users.is_active')
+        // ->paginate(5);
+
+        $users = User::where('is_active','=', true)
         ->paginate(5);
+
 
          
         return view('livewire.users-table', compact('users'));

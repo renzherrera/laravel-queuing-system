@@ -32,7 +32,7 @@
                               
 
                                 <div class="form-group">
-                                    <label for="department">{{__('Assigned to')}}</label>
+                                    <label for="counter">{{__('Assigned to')}}</label>
                                     <select class="form-control" name="counter_id" id="counter_id">
                                         @foreach ($counters as $counter )
                                             <option value="{{$counter->id}}">{{$counter->counter_name}}</option>
@@ -51,7 +51,7 @@
 
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-md btn-primary" type="submit"> Create New Service</button>
+                                <button class="btn btn-md btn-primary" type="submit"> Create New User</button>
                                 <a class="btn btn-md btn-warning pr-5 pl-5" href="{{route('admin.users.index')}}"> Back</a>
 
                             </div>

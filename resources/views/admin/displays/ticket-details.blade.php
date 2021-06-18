@@ -60,7 +60,13 @@
                                  @csrf
                                  <input value="{{$service->id}}" type="hidden" name="id">
                                  <input value="{{$service->default_number}}" type="hidden" name="default_number">
+                                 @if (!$queue)
+                                <br>{{$service->prefix }} - {{ $service->default_number + 1}}</h1> <br> 
+                                @else
                                 <br>{{$service->prefix }} - {{ $queue->ticket_number + 1}}</h1> <br> 
+                                @endif
+                                     
+                                 
                                 <div class="text-left more-details">
                                     <h3>Time Created: {{now()->format('g:i:s a')}}</h3>
                                     <h3>Type: {{$service->name}}</h3>
@@ -90,7 +96,7 @@ function printing() {
     Swal.fire({
 
     title: 'Printing',
-    html: '<h1 class="bg-success">Ticket # {{$queue->ticket_number + 1}}</h1> <br> <h2>Time created: {{now()->format('g:i:s a')}}</h2>',    
+    html: '<h1 class="bg-success">Ticket # {{$service->default_number + 1}}</h1> <br> <h2>Time created: {{now()->format('g:i:s a')}}</h2>',    
     imageUrl: '{{ asset('storage/images/printing.gif')}}',
     imageAlt: 'Printer GIF',
     showConfirmButton: false,

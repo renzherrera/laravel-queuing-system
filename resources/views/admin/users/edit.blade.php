@@ -29,7 +29,7 @@
                                     <input value="{{$user->email}}" class="form-control" name="email" type="emaiil">
                                 </div>
                                 <div class="form-group">
-                                    <label for="department">{{__('Department')}}</label>
+                                    <label for="department">{{__('Assign to Counter')}}</label>
                                     <select class="form-control" name="counter_id" id="counter_id">
                                         @foreach ($counters as $counter )
                                             @if ($counter->is_active)

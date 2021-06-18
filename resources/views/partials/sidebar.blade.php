@@ -16,15 +16,20 @@
           </svg> Dashboard
           </a>
        </li>
-       
+
+       @if (auth()->user()->counter_id)
+       <li class="c-sidebar-nav-title">{{__('BROADCAST')}}</li>
+
+       <li class="c-sidebar-nav-item">
+           <a class="c-sidebar-nav-link" href="{{route('admin.calls.create')}}">
+           <svg class="c-sidebar-nav-icon">
+             <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bullhorn')}}"></use>
+           </svg> Call
+           </a>
+        </li>
+        @endif
       <li class="c-sidebar-nav-title">{{__('Admin')}}</li>
-      <li class="c-sidebar-nav-item">
-          <a class="c-sidebar-nav-link" href="{{route('admin.calls.create')}}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bullhorn')}}"></use>
-          </svg> Call
-          </a>
-       </li>
+     
        @if (auth()->user()->is_admin)
     
        <li class="c-sidebar-nav-item">

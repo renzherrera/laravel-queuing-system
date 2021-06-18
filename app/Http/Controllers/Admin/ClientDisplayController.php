@@ -7,12 +7,14 @@ use App\Models\Department;
 use App\Models\Queue;
 use App\Models\Service;
 use Carbon\Carbon;
+use ErrorException;
 use Illuminate\Http\Request;
 
 class ClientDisplayController extends Controller
 {
     //temporary
     public $customerId = 1;
+    public $ticketNumber;
     public function showDepartments() {
         $departments = Department::select('id', 'department_name','is_active')->get();
         return view('admin.displays.departments',compact('departments'));
@@ -35,25 +37,27 @@ class ClientDisplayController extends Controller
 
 
     }
-    public function getTicketDetails(Service $service, Request $request) {
+    public function getTicketDetails(Service $service) {
         // get first ticketnumber + 1
-        $queue = Queue::select('queue_id','ticket_number','created_at','service_id')
-        ->where('service_id','=', $request->id)
-        ->where('created_at','>=', Carbon::today())
-        ->orderBy('created_at','desc')
-        ->first();
+       
+            $queue = Queue::select('queue_id','ticket_number','created_at','service_id')
+            ->where('service_id','=', $service->id)
+            ->where('created_at','>=', Carbon::today())
+            ->orderBy('created_at','desc')
+            ->first();
+     
+
 
         $waitingQueue = Queue::select('queue_id','ticket_number','created_at','service_id')
-        ->where('service_id','=', $request->id)
+        ->where('service_id','=', $service->id)
         ->where('created_at','>=', Carbon::today())
         ->where('called', '=', false)
         ->where('missed', '=', false)
         ->get();
 
-        
 
        
-       return view('admin.displays.ticket-details',compact('service','queue','waitingQueue'));
+       return view('admin.displays.ticket-details',compact('service','waitingQueue','queue'));
 
             
     }
@@ -71,14 +75,14 @@ class ClientDisplayController extends Controller
             Queue::create([
                 'service_id' => $request->id,
                 'ticket_number' => $request->default_number + 1,
-                'customer_id' => $this->customerId,
+                // 'customer_id' => $this->customerId,
             
             ]);
         } elseif($queue->count() > 0){
             Queue::create([
                 'service_id' => $request->id,
                 'ticket_number' => $queue->max('ticket_number') + 1,
-                'customer_id' => $this->customerId,
+                // 'customer_id' => $this->customerId,
             
             ]);
         }

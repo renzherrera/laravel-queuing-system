@@ -17,11 +17,12 @@ class UserSeeder extends Seeder
          User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('admin1234'),
+            //password already hashed in the model properties
+            'password' => 'admin1234',
             'is_admin' => 1,
             'is_active' => 1,
             'is_loggedin' => 0,
-            'counter_id' => 1,
+            // 'counter_id' => 1,
 
         ]);
     }

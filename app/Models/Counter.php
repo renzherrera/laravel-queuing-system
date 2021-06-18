@@ -14,11 +14,16 @@ class Counter extends Model
         'service_id',
         'is_active',
     ];
+    // public function getUserRelation()
+    // {
+    //     return $this->belongsTo(User::class, 'id', 'counter_id');
+    // }    
 
     public function services()
     {
         return $this->belongsTo(Service::class, 'service_id', 'id');
     }
+    
 
     public function queues()
     {

@@ -45,7 +45,7 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('counters', CounterController::class);
          Route::resource('users', UserController::class);
          Route::resource('queues', QueueController::class);
-         Route::resource('calls', CallController::class);
+         Route::resource('calls', CallController::class)->middleware('counter_assigned');
     
          
 

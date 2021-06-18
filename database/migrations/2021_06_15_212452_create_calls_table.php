@@ -13,14 +13,31 @@ class CreateCallsTable extends Migration
      */
     public function up()
     {
+
         Schema::create('calls', function (Blueprint $table) {
 
             $table->id('call_id');
-            $table->foreignId('queue_id')->constrained();
-            $table->foreignId('counter_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('queue_id')->nullable();
+            $table->foreign('queue_id')->references('queue_id')->on('queues');
+
+            $table->unsignedBigInteger('counter_id')->nullable();
+            $table->foreign('counter_id')->references('id')->on('counters');
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+
+        
             $table->timestamps();
+
         });
+        // Schema::table('calls', function(Blueprint $table)
+        // {
+
+        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        // $table->engine = 'InnoDB';
+          
+
+        // });
     }
 
     /**

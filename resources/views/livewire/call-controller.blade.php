@@ -25,10 +25,23 @@
     </style>
    
      
-                <div class="card"  >
-                    <div class="card-header"><h4 class="text-center call-header">{{ __('Broadcast - ' .Auth::user()->counters->counter_name.
-                       ' - ' . Auth::user()->counters->services->name)  }}</h4></div>
-                        <input type="hidden" id="counter_id" value="{{Auth::user()->counters->counter_name}}">
+                <div class="card">
+                    
+                    <div class="card-header">
+                        @if ($userCounter)
+                        <h4 class="text-center call-header">
+                            {{ 'Broadcast - '. $userCounter->counters->counter_name.
+                        ' - ' .$userCounter->counters->services->name  }}
+                        <input type="hidden" id="counter_id" value="{{$userCounter->counters->counter_name}}">
+                        </h4>
+                          @elseif(!$userCounter)
+                          <h4 class="text-center call-header">
+                            {{ 'Broadcast - Counter - Service ' }}
+                        </h4>
+                    @endif
+                        
+                    </div>
+
                     <div class="card-body" >
                         <form method="POST" action="{{ route('login') }}" wire:poll.3000ms>
                             @csrf
@@ -42,9 +55,12 @@
                             </div>
     
                             <div class="form-group row">
-                                <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $queues->count() }}</h1></label>
-    
-                                <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queueServed->count() }}</h1></label>
+                                <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $waitingQueues->count() }}</h1></label>
+                                    @if ($queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queue->count() }}</h1></label>
+                                    @elseif(!$queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">0</h1></label>
+                                    @endif                                   
     
                                 
                             </div>
@@ -54,12 +70,12 @@
                                 <label for="ticket_number" class="col-md-12 col-form-label text-md-center text-info "><h1 class="ticket-label" id="number">
                                     @if ($firstqueue)
                                     
-                                    <input type="hidden" id="ticket_number"  value="{{ Auth::user()->counters->services->prefix.'-'. $firstqueue->ticket_number }}">
+                                    <input type="hidden" id="ticket_number"  value="{{ $userCounter->counters->services->prefix .'-'. $firstqueue->ticket_number }}">
 
                                    @endif
                                     @if($queue)
-                                    {{ Auth::user()->counters->services->prefix.'-'. $lastcall->ticket_number }}
-                                    <input type="hidden" id="prev_ticket_number"  value="{{ Auth::user()->counters->services->prefix.'-'. $lastcall->ticket_number }}">
+                                    {{$lastcall->prefix.'-'. $lastcall->ticket_number }}
+                                    <input type="hidden" id="prev_ticket_number"  value="{{ $lastcall->prefix.'-'. $lastcall->ticket_number }}">
                                     <input type="hidden" name="queue_id" value="{{$lastcall->queue_id }}">
 
                                     @else 
@@ -87,11 +103,8 @@
                                 </div>
                                 <audio id="audio" src="{{ asset("storage/sounds/ding.mp3")}}" autoplay="0" ></audio>
                                 <div class="col-md-6 text-center">
-                                    @if ($queues)
-
                                     <button id="callBtn"  onclick="playSound();" wire:click.prevent="call()"  class="btn btn-primary call-btn text-white">Call Next</button>
 
-                                    @endif
                                 </div>
                             </div>
     
