@@ -30,7 +30,7 @@ class CounterController extends Controller
     public function create()
     {
         $services = Service::all(['id', 'name']);
-        $counters = Counter::all();
+        $counters = Counter::with('services')->get();
 
         $counterCount = $counters->count();
 
@@ -48,7 +48,7 @@ class CounterController extends Controller
     {
         Counter::create($request->validated());
 
-        return redirect()->route('admin.counters.index');  
+        return redirect()->route('admin.counters.index')->with('storeSuccess','New Counter added');  
     }
 
     /**
@@ -85,7 +85,7 @@ class CounterController extends Controller
     public function update(UpdateCounterRequest $request, Counter $counter)
     {
         $counter->update($request->validated());
-        return redirect()->route('admin.counters.index');  
+        return redirect()->route('admin.counters.index')->with('updateSuccess','Counter updated');  
 
 
     }
@@ -96,8 +96,10 @@ class CounterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Counter $counter)
     {
-        //
+        $counter->delete();
+        return redirect()->route('admin.counters.index')->with('deleteSuccess','Counter deleted');  
+
     }
 }

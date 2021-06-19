@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
+use Exception;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -41,7 +42,7 @@ class DepartmentController extends Controller
     {
         Department::create($request->validated());
 
-        return redirect()->route('admin.departments.create');  
+        return redirect()->route('admin.departments.create')->with('storeSuccess','Successfully added');  
     }
 
     /**
@@ -79,7 +80,8 @@ class DepartmentController extends Controller
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $department->update($request->validated());
-        return redirect()->route('admin.departments.create');  
+        return redirect()->route('admin.departments.create')->with('updateSuccess','Successfully added');  
+
 
 
     }
@@ -92,8 +94,14 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        $department->delete();
-        return redirect()->route('admin.departments.create');  
+        try{
+            $department->delete();
+            return redirect()->route('admin.departments.create')->with('success','Successfully Deleted');  
+
+            }catch(Exception $ex){
+                return redirect()->route('admin.departments.create')->with('foreignError','You are not allowed');  
+
+            }
  
     }
 }

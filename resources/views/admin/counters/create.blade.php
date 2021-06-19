@@ -5,6 +5,7 @@
     <div class="fade-in">
         <div class="row">
              <div class="col-md-12">
+               
                     <div class="card">
                         @if ($errors->any())
                             <div class="alert alert-danger">

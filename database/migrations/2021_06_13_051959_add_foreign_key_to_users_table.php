@@ -14,8 +14,9 @@ class AddForeignKeyToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            // $table->foreignId('counter_id')->nullable()->constrained()->default(null);
             $table->unsignedBigInteger('counter_id')->nullable();
-            $table->foreign('counter_id')->references('id')->on('counters')->onUpdate('cascade');
+            $table->foreign('counter_id')->nullable()->references('id')->on('counters')->onUpdate('cascade')->nullOnDelete();
 
         });
     }

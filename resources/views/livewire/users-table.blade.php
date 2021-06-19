@@ -24,9 +24,11 @@
 
         @endif
 
-        <td>
-        {{$user->counter_id}}
-        </td>
+        @if($user->counter_id)
+        <td>{{$user->counters->counter_name}}</td>
+        @else
+         <td> <span class="badge badge-secondary">Unavailable</span> </td> 
+        @endif
 
         @if ($user->is_active)
         <td><span class="badge badge-success">Active</span></td>
@@ -39,7 +41,7 @@
             <form style="display: inline-block" action="{{route('admin.users.destroy',[$user])}}" method="POST">
                 @csrf
                 @method('DELETE')
-            <button onclick="return confirm('{{__('Are you sure you want to delete this task?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
+            <button onclick="return confirm('{{__('Are you sure you want to delete this user?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
             </form>
         </td>
      

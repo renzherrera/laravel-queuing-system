@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Models\Counter;
 use App\Models\Department;
 use App\Models\Service;
+use Exception;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+
+
 
 class ServiceController extends Controller
 {
@@ -18,6 +23,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
+
         return view('admin.services.show');
 
     }
@@ -48,7 +54,7 @@ class ServiceController extends Controller
     {
         Service::create($request->validated());
 
-        return redirect()->route('admin.services.index');  
+        return redirect()->route('admin.services.index')->with('success','Item created successfully!'); 
     }
 
     /**
@@ -71,6 +77,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
+
         $departments = Department::get();
         return view('admin.services.edit',compact('service','departments'));
 
@@ -98,8 +105,20 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        $service->delete();
-        return redirect()->route('admin.services.index');  
+
+        $counter = Counter::where('service_id','=',$service->id)->first();
+        // if(!$counter) {
+        //     $service->delete();
+
+        // }
+        try{
+            $service->delete();
+            return redirect()->route('admin.services.index')->with('deleteSuccess','Deleted Successfully.');  
+
+        }catch(Exception $ex){
+
+        }
+
 
     }
 }

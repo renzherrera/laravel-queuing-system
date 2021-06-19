@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'is_admin' => 1,
             'is_active' => 1,
             'is_loggedin' => 0,
-            // 'counter_id' => 1,
+            'counter_id' => 1,
 
         ]);
     }

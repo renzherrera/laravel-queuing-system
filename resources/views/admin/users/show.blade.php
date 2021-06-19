@@ -8,6 +8,30 @@
              <div class="col-md-12">
             <a class="btn btn-xl btn-info mb-2 ml-1" href="{{route('admin.users.create')}}">Create New User</a>
 
+            @if ($message = Session::get('storeSuccess'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong>  New User added.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif($message = Session::get('updateSuccess'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong>  User details has been updated successfully.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif($message = Session::get('deleteSuccess'))
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Success!</strong>  User has been deleted successfully.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        @endif
+
+
                 <div class="card">
                     <div class="card-header"><i class="fa fa-align-justify"></i>{{__('List of Users')}}</div>
                     <div class="card-body">

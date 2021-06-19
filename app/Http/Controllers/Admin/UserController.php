@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         User::create($request->validated());
 
-        return redirect()->route('admin.users.index');  
+        return redirect()->route('admin.users.index')->with('storeSuccess','Deleted Successfully');  
     }
 
     /**
@@ -83,7 +83,12 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        return redirect()->route('admin.users.index');  
+        if($request->counter_id =""){
+            $user->counter_id = null;
+            $user->save();  
+        }
+       
+        return redirect()->route('admin.users.index')->with('updateSuccess','Deleted Successfully');  
     }
 
     /**
@@ -95,6 +100,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index');  
+        return redirect()->route('admin.users.index')->with('deleteSuccess','Deleted Successfully');  
     }
 }

@@ -1,5 +1,6 @@
 
 <div>
+
     <table class="table table-responsive-lg table-striped" >
                       
         <tbody>
@@ -28,11 +29,15 @@
         @endif
         <td>
             <a class="btn btn-sm btn-primary" href="{{route('admin.services.edit',[$service])}}">{{__('Edit')}}</a>
-            <form style="display: inline-block" action="{{route('admin.services.destroy',[$service])}}" method="POST">
+
+
+            <form id="" style="display: inline-block" action="{{route('admin.services.destroy',[$service])}}" method="POST">
                 @csrf
                 @method('DELETE')
-            <button onclick="return confirm('{{__('Are you sure you want to delete this task?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
+                <button onclick="return confirm('{{__('Counter designated from this service will be deleted also, Are you sure you want to delete this service?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
+
             </form>
+           
         </td>
      
         </tr>
@@ -45,5 +50,12 @@
         <div class="card-footer">
             {{ $services->links('pagination')}}
         </div>
+
+           
+
+
+           
+
+        
 </div>
 

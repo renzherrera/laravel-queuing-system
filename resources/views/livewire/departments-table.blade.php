@@ -26,7 +26,7 @@
             <form style="display: inline-block" action="{{route('admin.departments.destroy',[$department])}}" method="POST">
                 @csrf
                 @method('DELETE')
-            <button onclick="return confirm('{{__('Are you sure you want to delete this task?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
+            <button onclick="return confirm('{{__('Are you sure you want to delete this department?')}}')" class="btn btn-sm btn-danger" type="submit"> Delete</button>
             </form>
         </td>
      

@@ -24,7 +24,7 @@ class Service extends Model
 
     public function getCounterRelation()
     {
-        return $this->belongsTo(Counter::class, 'service_id', 'id');
+        return $this->hasMany(Counter::class, 'service_id', 'id');
     }
     
 

@@ -31,6 +31,8 @@
                                 <div class="form-group">
                                     <label for="department">{{__('Assign to Counter')}}</label>
                                     <select class="form-control" name="counter_id" id="counter_id">
+                                        <option value="">No Counter</option>
+
                                         @foreach ($counters as $counter )
                                             @if ($counter->is_active)
                                                

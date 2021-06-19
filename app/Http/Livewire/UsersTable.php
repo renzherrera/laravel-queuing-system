@@ -17,7 +17,7 @@ class UsersTable extends Component
         // ->select('users.id', 'users.name', 'users.email','users.is_admin','counters.counter_name','users.is_active')
         // ->paginate(5);
 
-        $users = User::where('is_active','=', true)
+        $users = User::with('counters')->where('is_active','=', true)
         ->paginate(5);
 
 
