@@ -15,7 +15,7 @@ use Livewire\Component;
 class CallController extends Component
 {
     public $queue_id;
-
+    public $disableButton =false;
     public $serviceId;
     public function mount(){
 
@@ -35,10 +35,10 @@ class CallController extends Component
             ->first();
 
             //get last queue result
-
+          
             $queue = Queue::with('getServiceRelation')
             ->where('called', '=', true)
-            ->where('missed', '=', false)
+            // ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->orderBy('queue_id','desc')
             ->first();
@@ -51,11 +51,24 @@ class CallController extends Component
             ->get();
 
 
-            //get total attempts
-            $calls = Call::where('queue_id', '=', $this->queue_id)
+          
+          
+            $queueServed = Queue::with('getServiceRelation')
+            ->select('queue_id')
+            ->where('called', '=', true)
+            ->where('missed', '=', false)
+            ->where('served', '!=', null)
             ->where('created_at','>=', Carbon::today())
             ->get();
-    
+
+            $missed = Queue::with('getServiceRelation')
+            ->select('queue_id')
+            ->where('called', '=', true)
+            ->where('missed', '=', true)
+            ->where('served', '=', null)
+            ->where('created_at','>=', Carbon::today())
+            ->count();
+            
 
             //now serving
             $lastcall = Call::join('queues','calls.queue_id','=','queues.queue_id')
@@ -71,9 +84,14 @@ class CallController extends Component
             if($queue){
             //updating last call queue_id after call 
             $this->queue_id = $lastcall->queue_id;
-        }
             
-        return view('livewire.call-controller',compact('queue','waitingQueues','calls','firstqueue','lastcall','userCounter'));
+             }
+          //get total attempts
+            $calls = Call::where('queue_id', '=', $lastcall->queue_id)
+            ->where('created_at','>=', Carbon::today())
+            ->count();
+            
+        return view('livewire.call-controller',compact('queue','waitingQueues','calls','firstqueue','lastcall','userCounter','queueServed','missed'));
     }
 
     public function call(Request $request) {
@@ -92,12 +110,7 @@ class CallController extends Component
             ->get();
             
            
-            $queueServed = Queue::where('service_id', '=', $this->serviceId)
-            ->where('called', '=', true)
-            ->where('missed', '=', false)
-            ->where('created_at','>=', Carbon::today())
-            ->get();
-            
+         
 
             if($queue){
                 if($queues->count() > 0){
@@ -112,11 +125,11 @@ class CallController extends Component
                     'user_id' => Auth::user()->id,
               
                 ]);
+                $this->disableButton = true;
+
             }
          
-         
-
-        return view('livewire.call-controller',compact('queue','queues','queueServed'));
+        return view('livewire.call-controller',compact('queue','queues'));
 
     }
 
@@ -126,15 +139,80 @@ class CallController extends Component
         // ->where('created_at','>=', Carbon::today())
         // ->get();
         sleep(2);
+
+        $queue = Queue::with('getServiceRelation')
+        ->where('called', '=', true)
+        ->where('missed', '=', false)
+        ->where('created_at','>=', Carbon::today())
+        ->first();
+        
+            //now serving
+            $lastcall = Call::join('queues','calls.queue_id','=','queues.queue_id')
+            ->join('services', 'queues.service_id', '=', 'services.id')
+            ->select('queues.queue_id','calls.user_id' ,'calls.counter_id','services.prefix','services.name', 'queues.ticket_number', 'queues.service_id')
+            ->where('calls.created_at','>=', Carbon::today())
+            ->where('calls.user_id','=', Auth::user()->id)
+            ->orderBy('counter_id','asc')
+    
+            ->orderBy('calls.created_at','desc')
+            ->first();
+
+          
+        if($queue){
             Call::create([
                 'queue_id' => $this->queue_id,
                 'counter_id' => Auth::user()->counters->id,
                 'user_id' => Auth::user()->id,
           
             ]);
-
+        }
 
       
     }
+
+    public function noShow(Request $request ) {
+        $queue = Queue::with('getServiceRelation')
+        ->where('queue_id',$this->queue_id)
+        ->where('called', '=', true)
+        ->where('missed', '=', false)
+        ->where('created_at','>=', Carbon::today())
+        ->first();
+                   
+      
+
+        if($queue){
+                $queue->missed = true;
+                $queue->save();
+                }
+         $this->disableButton = "false";
+         return redirect(route('admin.calls.create'));
+
+    }
+
+
+    public function served() {
+        $queue = Queue::with('getServiceRelation')
+        ->where('queue_id',$this->queue_id)
+        ->where('called', '=', true)
+        ->where('missed', '=', false)
+        ->where('served', '=', null)
+        ->where('created_at','>=', Carbon::today())
+        ->first();
+                   
+     
+        $this->disableButton = "false";
+      
+
+        if($queue){
+                $queue->called = true;
+                $queue->served = now();
+                $queue->save();
+                }
+                return redirect(route('admin.calls.create'));
+
+         }
+
+
+
 
 }

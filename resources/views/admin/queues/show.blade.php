@@ -1,104 +1,33 @@
-@extends('layouts.display')
+
+@extends('layouts.app')
 
 @section('content')
-<style>
-    .btn-queue{
-        padding: 50px;
-        font-size: 25px;
-        width: 25%;
-    }
-   
-    .btn-title{
-        text-align: center
-    }
-
-    .print-div{
-        width: 100%;
-        text-align: center;
-        color: rgb(0, 0, 0);
-    }
-
-    .ticket-number{
-        font-size: 70px;
-        font-weight: bold;
-    }
-    .title{
-        font-size: 55px;
-        font-weight: 100;
-    }
-  
-  .sweet-alert{
-    padding: 0 !important;
-  }
-   </style>
-
-        <div id="noprint" class="card">
-            <div class="card-header text-center"><h1>{{ __('Choose service') }}</h1></div>
-                <div class="card-body">
-                  
-                        <div class="container text-center">
-                            @foreach ($services as $service)
-                            @if ($service->is_active)
-                            <form action="{{route('admin.queues.store',$service)}}" method="POST">
-                                @csrf
-                                <input value="{{$service->id}}" type="hidden" name="id">
-                                <input value="{{$service->default_number}}" type="hidden" name="default_number">
-                            <button class="btn btn-queue btn-info mb-2 ml-1" type="submit" onclick="printing()">{{$service->name}}</a>
-                            </form>
-                            @endif
-                            @endforeach
-                            
-
-                        </div>
+<div class="container-fluid">
+    <div class="fade-in">
+        <div class="row">
+             <div class="col-md-12">
+            @if ($message = Session::get('storeSuccess'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong>  New Counter added.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-        </div>
-
-        <div id="print" class="card" style="display: none">
-                <div class="card-body">
-                  
-                        <div class="container text-center">
-                           
-                            <div class="print-div">
-                                <h2 class="title">TICKET #</h2>
-                            <h1 style="margin-top: -90px;" class="ticket-number" >
-                                <br>{{$service->prefix }} - {{ $ticketNumber + 1}}</h1> <br> 
-                                    <h3>Time Created: {{now()->format('g:i:s a')}}</h3>
-                                    <h3>Service: {{$service->name}}</h3>
-            
-                        </div>  
-
-                        </div>
+            @elseif($message = Session::get('updateSuccess'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong>  Counter details has been updated successfully.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-        </div>
-
-</div>
-
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-
-function printing() {
-    var x = document.getElementById("print");
-    var y = document.getElementById("noprint");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            y.style.display = "none";
-        } else {
-            y.style.display = "block";
-            x.style.display = "none";
-        }
-    window.print();
-
-    Swal.fire({
-
-    title: 'Printing',
-    html: '<h1 class="bg-success">Ticket # {{$ticketNumber + 1}}</h1> <br> <h2>Time created: {{now()->format('g:i:s a')}}</h2>',    
-    imageUrl: '{{ asset('storage/images/printing.gif')}}',
-    imageAlt: 'Printer GIF',
-    showConfirmButton: false,
-    allowOutsideClick: false,
-})
-
-}
-
-</script>
-@endsection
+          
+            @endif
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-align-justify"></i>{{__('List of Queues')}}</div>
+                        <div class="card-body">
+                                @livewire('queues-table')
+                        
+                        </div>
+                    </div>
+             </div>
+             @endsection

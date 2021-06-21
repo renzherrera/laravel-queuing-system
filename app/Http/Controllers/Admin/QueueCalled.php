@@ -3,18 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreQueueRequest;
 use App\Models\Counter;
-use App\Models\Department;
-use App\Models\Queue;
-use App\Models\Service;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class QueueController extends Controller
+class QueueCalled extends Controller
 {
-    public $customerId = 1, $serviceId ,$ticketNumber;
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +15,10 @@ class QueueController extends Controller
      */
     public function index()
     {
-        // QUEUE DISPLAY SCREEN
+      // QUEUE DISPLAY SCREEN
+      $counters = Counter::all(['id', 'counter_name']);
 
-        return view('admin.queues.show');
+      return view('admin.queues.queue-display',compact('counters'));
     }
 
     /**
@@ -32,19 +26,34 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
-
-    // public function showServices(Department $department)
-    // {
-    //     $services = Service::select('id', 'name','is_active','department_id')
-    //     ->where('department_id', '=', 100)
-    //     ->get();
-    //     return view('admin.queues.showServices',compact('services'));
-
-    // }
+    public function create()
+    {
+        //
+    }
 
     /**
-  
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

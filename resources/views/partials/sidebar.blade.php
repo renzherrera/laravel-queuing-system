@@ -31,7 +31,14 @@
       <li class="c-sidebar-nav-title">{{__('Admin')}}</li>
      
        @if (auth()->user()->is_admin)
-    
+       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{route('admin.queues.index')}}">
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-group')}}"></use>
+        </svg> {{__('Queues')}}
+        </a>
+        </li>
+
        <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{route('admin.departments.create')}}">
         <svg class="c-sidebar-nav-icon">

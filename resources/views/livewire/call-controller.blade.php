@@ -6,14 +6,15 @@
             margin: 25px 0px 25px 0px;
         }
         .call-btn{
-            padding:20px 25px 20px 25px;
+            padding:15px 25px 15px 25px;
             width: 75%;
             margin-top: 5%;
             margin-bottom: 10%;
-            font-size: 19px;
+            font-size: 15px;
         }
         .call-label{
-            font-size: 1.8rem;
+            font-size: 1.2rem;
+            width: 100%
         }
         .call-number-label{
             font-size: 4.5rem;
@@ -21,6 +22,11 @@
         .ticket-label{
             font-size: 3.5rem;
             letter-spacing: 10px;
+        
+        }
+        .col-md-4{
+            width: 100% !important;
+            padding: 0;
         }
     </style>
    
@@ -46,33 +52,44 @@
                         <form method="POST" action="{{ route('login') }}" wire:poll.3000ms>
                             @csrf
     
-                            <div class="form-group row">
-                                <label for="email" class="col-md-6 col-form-label text-info text-md-center call-label">{{ __('Waiting') }}</label>
+                            <div class="form-group row text-center">
+                                <div class="col-md-4">
+                                    <label for="email" class="col-md-6 col-form-label text-info text-md-center call-label">{{ __('Waiting') }}</label>
+                                    <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $waitingQueues->count() }}</h1></label>
+                                                                  
     
-                                <label for="email" class="col-md-6 col-form-label text-md-center text-success call-label">{{ __('Served') }}</label>
-    
-                                
-                            </div>
-    
-                            <div class="form-group row">
-                                <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $waitingQueues->count() }}</h1></label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="email" class="col-md-6 col-form-label text-md-center text-success call-label">{{ __('Served') }}</label>
                                     @if ($queue)
-                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queue->count() }}</h1></label>
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queueServed->count() }}</h1></label>
                                     @elseif(!$queue)
                                     <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">0</h1></label>
-                                    @endif                                   
+                                    @endif    
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="email" class="col-md-6 col-form-label text-md-center text-dark call-label">{{ __('Missed') }}</label>
+                                    @if ($queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-dark"><h1 class="call-number-label">{{  $missed  }}</h1></label>
+                                    @elseif(!$queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-dark"><h1 class="call-number-label">0</h1></label>
+                                    @endif    
+                                </div>
+    
     
                                 
                             </div>
     
-                            <div class="form-group row">
+                          
+    
+                            <div class="form-group row text-center">
                                 <label for="password" class="col-md-12 col-form-label text-md-center"><h1>{{ __('NOW SERVING') }}</h1></label>
                                 <label for="ticket_number" class="col-md-12 col-form-label text-md-center text-info "><h1 class="ticket-label" id="number">
                                     @if ($firstqueue)
-                                    
                                     <input type="hidden" id="ticket_number"  value="{{ $userCounter->counters->services->prefix .'-'. $firstqueue->ticket_number }}">
+                                        
+                                    @endif
 
-                                   @endif
                                     @if($queue)
                                     {{$lastcall->prefix.'-'. $lastcall->ticket_number }}
                                     <input type="hidden" id="prev_ticket_number"  value="{{ $lastcall->prefix.'-'. $lastcall->ticket_number }}">
@@ -84,26 +101,50 @@
                                 </h1></label>
                                 <label for="password" class="col-md-12 col-form-label text-md-center text-warning">
                                 <h3>
-                                    @if ($calls)
-                                        {{$calls->count()}}
-                                    @endif
+                                        {{$calls}}
                                 call(s) attempt.
                                 </h3></label>
                         
-                                   
                             </div>
     
                             <div class="form-group row">
-                                <div class="col-md-6 text-center">
-                                    @if ($queue)
-                                    <a wire:click="callAgain()" onclick="replaySound();" class="btn btn-warning call-btn" href="#">CALL AGAIN</a>
+                                <div class="col-md-6 text-center ">
+                                    {{-- <button class="btn btn-primary" type="button">
+                                        <svg class="c-icon">
+                                        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-truck')}}"></use>
+                                        </svg>&nbsp;Standard Button
+                                        </button> --}}
+                                    <button id="servedBtn"  wire:click.prevent="served()"  class="btn btn-success call-btn text-white font-weight-bold" @if (!$disableButton)
+                                    disabled
+                                   @endif>
+                                          <svg class="c-icon">
+                                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-check')}}"></use>
+                                          </svg>&nbsp;&nbsp;Served</button>
+                                    <button wire:click="noShow()" id="noShowBtn"  class="btn btn-secondary call-btn   font-weight-bold"   @if (!$disableButton)
+                                    disabled
+                                   @endif>
+                                        <svg class="c-icon">
+                                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-x-circle')}}"></use>
+                                          </svg>&nbsp;&nbsp;No Show</button>
                                         
-                                    @endif
                                   
                                 </div>
                                 <audio id="audio" src="{{ asset("storage/sounds/ding.mp3")}}" autoplay="0" ></audio>
                                 <div class="col-md-6 text-center">
-                                    <button id="callBtn"  onclick="playSound();" wire:click.prevent="call()"  class="btn btn-primary call-btn text-white">Call Next</button>
+                                    <button wire:click.prevent="callAgain()" onclick="replaySound();" id="callAgainBtn" class="btn btn-warning call-btn font-weight-bold text-white" @if (!$disableButton)
+                                    disabled
+                                   @endif >
+                                        Re-call<svg class="c-icon ml-2">
+                                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-reload')}}"></use>
+                                          </svg></button>
+                                    <button id="nextBtn"  onclick="playSound();" wire:click.prevent="call()"  
+                                    class="btn btn-info call-btn text-white font-weight-bold"
+                                     @if ($disableButton)
+                                     disabled
+                                    @endif>
+                                        Next&nbsp;&nbsp;<svg class="c-icon">
+                                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-chevron-double-right')}}"></use>
+                                          </svg></button>
 
                                 </div>
                             </div>
@@ -112,8 +153,9 @@
                         </form>
                     </div>
                 </div>
-               
+                
                 <script>
+                    
                      
                     
                     function playSound() {

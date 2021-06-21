@@ -36,7 +36,7 @@
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                 </svg> Users View
                 </a>
-                <a class="dropdown-item" href="{{route('admin.queues.index')}}"  target="_blank">
+                <a class="dropdown-item" href="{{route('admin.queues-called.index')}}"  target="_blank">
                   <svg class="c-icon mr-2">
                       <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                   </svg> Display Queue

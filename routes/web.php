@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ClientDisplayController;
 use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\QueueCalled;
 use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
@@ -48,6 +49,7 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('counters', CounterController::class);
          Route::resource('users', UserController::class);
          Route::resource('queues', QueueController::class);
+         Route::resource('queues-called', QueueCalled::class);
          Route::resource('calls', CallController::class)->middleware('counter_assigned');
     
          
