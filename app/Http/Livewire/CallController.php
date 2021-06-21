@@ -81,7 +81,7 @@ class CallController extends Component
             ->orderBy('calls.created_at','desc')
             ->first();
 
-            if($queue){
+            if($queue ){
             //updating last call queue_id after call 
             $this->queue_id = $lastcall->queue_id;
             
