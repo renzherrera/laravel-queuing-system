@@ -27,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+      
         $todayQueuesCount = Queue::select('queue_id', 'created_at')
         ->where('created_at','>=',Carbon::today())
         ->count();

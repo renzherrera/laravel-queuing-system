@@ -5,9 +5,13 @@ use App\Models\Queue;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
+
 
 class QueuesTable extends Component
 {
+    use WithPagination;
+
     public function render()
     {
        

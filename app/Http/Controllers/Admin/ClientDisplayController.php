@@ -63,7 +63,7 @@ class ClientDisplayController extends Controller
     }
 
     public function storeQueue(Request $request){
-        sleep(5);
+        // sleep(5);
 
         $queue = Queue::select('queue_id','ticket_number','created_at')
         ->where('ticket_number', '>', $request->default_number)

@@ -9,9 +9,9 @@
                 <th>Queue Id</th>
                 <th>Service</th>
                 <th>Ticket #</th>
-                <th>Status</th>
-                <th>Registered Time</th>
+                <th>Time</th>
                 <th>Date</th>
+                <th>Status</th>
                 </tr>
                 </thead>
             @foreach ($queues as $queue )
@@ -21,6 +21,9 @@
         <td>{{$queue->getServiceRelation->name}}</td>
         <td>{{$queue->getServiceRelation->prefix .' - '.$queue->ticket_number}}</td>
     
+       
+        <td>{{$queue->created_at->format('h:i:s A')}}</td>
+        <td>{{$queue->created_at->format('m-d-Y')}}</td>
         @if ($queue->called == true)
         <td class="font-weight-semibold">Called &nbsp;<span class="badge badge-info">{{$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
         
@@ -30,8 +33,6 @@
 
 
         @endif
-        <td>{{$queue->created_at->format('h:i:s A')}}</td>
-        <td>{{$queue->created_at->format('m-d-Y')}}</td>
         {{-- <td>{{$queue->updated_at}}</td> --}}
         {{-- <td>
             <a class="btn btn-sm btn-primary" href="{{route('admin.services.edit',[$service])}}">{{__('Edit')}}</a>

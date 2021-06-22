@@ -115,7 +115,7 @@
                                           <svg class="c-icon">
                                             <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-check')}}"></use>
                                           </svg>&nbsp;&nbsp;Served</button>
-                                    <button wire:click="noShow()" id="noShowBtn"  class="btn btn-secondary call-btn   font-weight-bold"   @if (!$disableButton)
+                                    <button wire:click.prevent="noShow()" id="noShowBtn"  class="btn btn-secondary call-btn   font-weight-bold"   @if (!$disableButton)
                                     disabled
                                    @endif>
                                         <svg class="c-icon">
