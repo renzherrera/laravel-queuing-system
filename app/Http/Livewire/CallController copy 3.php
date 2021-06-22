@@ -23,9 +23,8 @@ class CallController extends Component
     }
     public function render()
     {
-        $calls = 0;
         $nowServing=null;
-
+        $calls = 0;
             // GET USER DETAILS AND COUNTER 
             $userCounter = User::with('counters')
             ->where('id','=', Auth::user()->id)
@@ -37,7 +36,6 @@ class CallController extends Component
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->count();
-
 
             //SERVED TODAY
             $queueServed = Queue::with('getServiceRelation')
@@ -73,29 +71,26 @@ class CallController extends Component
             ->where('created_at','>=', Carbon::today())
             ->orderBy('queue_id','desc')
             ->first();
-        if($calledqueue){
-                try{
-                    $nowServing = Call::with('queues')
-                    ->where('created_at','>=', Carbon::today())
-                    ->orderBy('call_id','desc')
-                    ->first();
+            if($firstqueue && $checkCallCount){
+            //GET LAST QUEUE CALLED IN CALL TABLE - NOW SERVING
+            $nowServing = Call::with('queues')
+            ->where('created_at','>=', Carbon::today())
+            ->orderBy('call_id','desc')
+            ->first();
 
-                    if(!$nowServing->queues->missed && !$nowServing->queues->served){
-                        $this->disableButton = true;
-                    }
-                    $calls = Call::where('queue_id', '=', $nowServing->queue_id)
-                    ->where('created_at','>=', Carbon::today())
-                    ->count();
-                    if($nowServing){
-        
-                        $this->queue_id = $nowServing->queue_id;
-                        
-                         }
-                }catch(Exception $ex){
-                  $nowServing=null;
-         
+            if($nowServing){
+
+                $this->queue_id = $nowServing->queue_id;
+                
+                 }
+            if(!$nowServing->queues->missed && !$nowServing->queues->served){
+                $this->disableButton = true;
+            }
+            $calls = Call::where('queue_id', '=', $nowServing->queue_id)
+            ->where('created_at','>=', Carbon::today())
+            ->count();
+
         }
-    }
         return view('livewire.call-controller',compact('userCounter','waitingQueues','queueServed','missed','firstqueue','nowServing','calls','calledqueue'));
 
 

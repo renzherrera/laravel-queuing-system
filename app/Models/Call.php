@@ -14,7 +14,7 @@ class Call extends Model
         'counter_id',
     ];
     public function queues() {
-        return $this->belongsTo(Queue::class);
+        return $this->belongsTo(Queue::class, 'queue_id', 'queue_id');
 
     }
 }

@@ -55,17 +55,25 @@
                             <div class="form-group row text-center">
                                 <div class="col-md-4">
                                     <label for="email" class="col-md-6 col-form-label text-info text-md-center call-label">{{ __('Waiting') }}</label>
-                                    <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $waitingQueues}}</h1></label>
+                                    <label for="total_waiting" class="col-md-6 col-form-label text-xl-center text-info"><h1 class="call-number-label" >{{ $waitingQueues->count() }}</h1></label>
                                                                   
     
                                 </div>
                                 <div class="col-md-4">
                                     <label for="email" class="col-md-6 col-form-label text-md-center text-success call-label">{{ __('Served') }}</label>
-                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queueServed }}</h1></label>
+                                    @if ($queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">{{ $queueServed->count() }}</h1></label>
+                                    @elseif(!$queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-success"><h1 class="call-number-label">0</h1></label>
+                                    @endif    
                                 </div>
                                 <div class="col-md-4">
                                     <label for="email" class="col-md-6 col-form-label text-md-center text-dark call-label">{{ __('Missed') }}</label>
+                                    @if ($queue)
                                     <label for="total_served" class="col-md-6 col-form-label text-xl-center text-dark"><h1 class="call-number-label">{{  $missed  }}</h1></label>
+                                    @elseif(!$queue)
+                                    <label for="total_served" class="col-md-6 col-form-label text-xl-center text-dark"><h1 class="call-number-label">0</h1></label>
+                                    @endif    
                                 </div>
     
     
@@ -78,25 +86,24 @@
                                 <label for="password" class="col-md-12 col-form-label text-md-center"><h1>{{ __('NOW SERVING') }}</h1></label>
                                 <label for="ticket_number" class="col-md-12 col-form-label text-md-center text-info "><h1 class="ticket-label" id="number">
 
-                                    {{-- GET QUEUE TO VOICE MESSAGE WHO HAS NOT CALLED--}}
+                                    {{-- GET FIRST QUEUE WHO HAS NOT BEEN CALLED --}}
                                     @if ($firstqueue)
-                                    <input type="hidden" id="ticket_number"  value="{{ $userCounter->counters->services->prefix .'-'. $firstqueue->ticket_number }}" readonly>
+                                    <input type="hidden" id="ticket_number"  value="{{ $userCounter->counters->services->prefix .'-'. $firstqueue->ticket_number }}">
+                                        
                                     @endif
 
-                                    {{-- data for now serving --}}
-                                    @if ($nowServing)
-                                    {{$userCounter->counters->services->prefix.'-'. $nowServing->queues->ticket_number }}
-                                    <input type="hidden" id="prev_ticket_number"  value="{{ $userCounter->counters->services->prefix.'-'. $nowServing->queues->ticket_number }}" readonly>
-                                    <input type="hidden" name="queue_id" value="{{$nowServing->queue_id }}" readonly>
+                                    @if($lastcall)
+                                    {{$lastcall->prefix.'-'. $lastcall->ticket_number }}
+                                    <input type="text" id="prev_ticket_number"  value="{{ $lastcall->prefix.'-'. $lastcall->ticket_number }}">
+                                    <input type="text" name="queue_id" value="{{$lastcall->queue_id }}">
 
-                                    @else
+                                    @else 
                                     0
                                     @endif
-
                                 </h1></label>
                                 <label for="password" class="col-md-12 col-form-label text-md-center text-warning">
                                 <h3>
-                                        {{$calls}}
+                                        {{-- {{$calls}} --}}
                                 call(s) attempt.
                                 </h3></label>
                         
@@ -134,7 +141,7 @@
                                           </svg></button>
                                     <button id="nextBtn"  onclick="playSound();" wire:click.prevent="call()"  
                                     class="btn btn-info call-btn text-white font-weight-bold"
-                                     @if ($disableButton OR !$waitingQueues)
+                                     @if ($disableButton)
                                      disabled
                                     @endif>
                                         Next&nbsp;&nbsp;<svg class="c-icon">

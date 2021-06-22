@@ -16,91 +16,94 @@ use Livewire\Component;
 class CallController extends Component
 {
     public $queue_id;
-    public $disableButton;
+    public $disableButton =false;
     public $serviceId;
+    public $lastcall;
     public function mount(){
 
     }
     public function render()
     {
-        $calls = 0;
-        $nowServing=null;
+
 
             // GET USER DETAILS AND COUNTER 
             $userCounter = User::with('counters')
             ->where('id','=', Auth::user()->id)
             ->first();
             
-              //Waiting ON QUEUES
+
+            $firstqueue = Queue::with('getServiceRelation')
+            ->where('created_at','>=', Carbon::today())
+            ->first();
+
+            //getting the last queue to show last queue eveen after refresh
+          
+            $queue = Queue::with('getServiceRelation')
+            ->where('missed', '=', false)
+            ->where('created_at','>=', Carbon::today())
+            ->orderBy('queue_id','desc')
+            ->first();
+
+            //get all queues not called
             $waitingQueues = Queue::with('getServiceRelation')
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
-            ->count();
+            ->get();
 
-
-            //SERVED TODAY
+          
+            //get all served
             $queueServed = Queue::with('getServiceRelation')
             ->select('queue_id')
             ->where('called', '=', true)
             ->where('missed', '=', false)
             ->where('served', '!=', null)
             ->where('created_at','>=', Carbon::today())
+            ->get();
+
+            //gett all missed
+            $missed = Queue::with('getServiceRelation')
+            ->select('queue_id')
+            ->where('called', '=', true)
+            ->where('missed', '=', true)
+            ->where('served', '=', null)
+            ->where('created_at','>=', Carbon::today())
             ->count();
 
-             //get all missed today
-             $missed = Queue::with('getServiceRelation')
-             ->select('queue_id')
-             ->where('called', '=', true)
-             ->where('missed', '=', true)
-             ->where('served', '=', null)
-             ->where('created_at','>=', Carbon::today())
-             ->count();
+            
+            $checkCalls = Call::count();
 
-
-             //check call count
-             $checkCallCount = Call::select('call_id')->count();
-             // GET FIRST QUEUE WHO HAS NOT CALLED AND NOT MISSED
-            $firstqueue = Queue::with('getServiceRelation')
-            ->where('called', '=', false)
-            ->where('missed', '=', false)
-            ->where('created_at','>=', Carbon::today())
-            ->first();
-        //    CHECK QUEUE WHO ARE ALREADY CALLED BUT NOT YET MISSED OR SERVED
-            $calledqueue = Queue::with('getServiceRelation')
-            ->where('called', '=', true)
-            ->where('missed', '=', false)
-            ->where('created_at','>=', Carbon::today())
-            ->orderBy('queue_id','desc')
-            ->first();
-        if($calledqueue){
-                try{
-                    $nowServing = Call::with('queues')
-                    ->where('created_at','>=', Carbon::today())
-                    ->orderBy('call_id','desc')
-                    ->first();
-
-                    if(!$nowServing->queues->missed && !$nowServing->queues->served){
-                        $this->disableButton = true;
-                    }
-                    $calls = Call::where('queue_id', '=', $nowServing->queue_id)
-                    ->where('created_at','>=', Carbon::today())
-                    ->count();
-                    if($nowServing){
+            if($checkCalls){
+            //now serving
+                $lastcall = Call::join('queues','calls.queue_id','=','queues.queue_id')
+                ->join('services', 'queues.service_id', '=', 'services.id')
+                ->select('queues.queue_id','calls.user_id' ,'calls.counter_id','services.prefix','services.name', 'queues.ticket_number', 'queues.service_id')
+                ->where('calls.created_at','>=', Carbon::today())
+                ->where('calls.user_id','=', Auth::user()->id)
+                ->orderBy('counter_id','asc')
         
-                        $this->queue_id = $nowServing->queue_id;
-                        
-                         }
-                }catch(Exception $ex){
-                  $nowServing=null;
+                ->orderBy('calls.created_at','desc')
+                ->first();
+
          
+
+            //updating last call queue_id after call 
+            if($lastcall ){
+
+            $this->queue_id = $lastcall->queue_id;
+            
+             }
+          //get total attempts
+            $calls = Call::where('queue_id', '=', $lastcall->queue_id)
+            ->where('created_at','>=', Carbon::today())
+            ->count();
+            return view('livewire.call-controller',compact('queue','waitingQueues','firstqueue','calls','lastcall','userCounter','queueServed','missed'));
+
+        } else {
+            return view('livewire.call-controller',compact('queue','waitingQueues','firstqueue','userCounter','queueServed','missed'));
+
         }
-    }
-        return view('livewire.call-controller',compact('userCounter','waitingQueues','queueServed','missed','firstqueue','nowServing','calls','calledqueue'));
-
-
         
-
             
     }
 
