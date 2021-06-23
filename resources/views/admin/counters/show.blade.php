@@ -30,7 +30,9 @@
                 </div>
             @endif
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i>{{__('List of Counters')}}</div>
+
+            
+                        <div class="card-header"><i class="fa fa-align-justify"></i><h4 class="card-title mb-0">{{__('List of Counters')}}</h4></div>
                         <div class="card-body">
                                 @livewire('counters-table')
                         

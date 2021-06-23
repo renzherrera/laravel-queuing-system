@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Counter;
+use App\Models\Department;
 use App\Models\Queue;
+use App\Models\Service;
+use App\Models\User;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
@@ -27,6 +31,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $usersCount = User::count();
+        $departmentsCount = Department::count();
+        $servicesCount = Service::count();
+        $countersCount = Counter::count();
+
       
         $todayQueuesCount = Queue::select('queue_id', 'created_at')
         ->where('created_at','>=',Carbon::today())
@@ -122,11 +131,107 @@ class HomeController extends Controller
                  $missedArr[$i] = 0;    
              }
          }
-        return view('home',compact('queueArr','servedArr','missedArr','todayQueuesCount','todayServedCount','todayMissedCount'));
-    }
 
-    public function barChart(){
+
+
+
+         //WEEEEEEEEEEK QUEUE 
+
+
+         $weekQueue = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+         ->get()
+         ->groupBy(function($date) {
+            //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+            return Carbon::parse($date->created_at)->format('w'); // grouping by months
+        });
+ 
+ 
+ 
+         $weekmcount = [];
+         $weekArr = [0,0,0,0,0,0,0];
+         
+         foreach ($weekQueue as $key => $value) {
+             $weekmcount[(int)$key] = count($value);
+         }
+         
+         for($i = 1; $i <= 6; $i++){
+             if(!empty($weekmcount[$i])){
+                 $weekArr[$i] = $weekmcount[$i];    
+             }else{
+                 $weekArr[$i] = 0;    
+             }
+         }
+
+         
+         //SERVED QUEUE 
+
+
+         
+         $weekServed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+         ->where('served','!=', null)
+         ->where('missed','=', false)
+         
+         ->get()
+         ->groupBy(function($date) {
+            //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+            return Carbon::parse($date->created_at)->format('w'); // grouping by months
+        });
+ 
+ 
+ 
+         $weekServeCount = [];
+         $weekServedArr = [0,0,0,0,0,0,0];
+         
+         foreach ($weekServed as $key => $value) {
+             $weekServeCount[(int)$key] = count($value);
+         }
+         
+         for($i = 1; $i <= 6; $i++){
+             if(!empty($weekServeCount[$i])){
+                 $weekServedArr[$i] = $weekServeCount[$i];    
+             }else{
+                 $weekServedArr[$i] = 0;    
+             }
+         }
+
+
+     //WEEEEEEEEEEK QUEUE 
+
+
+     $weekMissed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+     ->where('missed','=', true)
+     ->get()
+     ->groupBy(function($date) {
+        //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+        return Carbon::parse($date->created_at)->format('w'); // grouping by months
+    });
+
+
+
+     $weekMissedCount = [];
+     $weekMissedArr = [0,0,0,0,0,0,0];
      
+     foreach ($weekMissed as $key => $value) {
+         $weekMissedCount[(int)$key] = count($value);
+     }
+     
+     for($i = 1; $i <= 6; $i++){
+         if(!empty($weekMissedCount[$i])){
+             $weekMissedArr[$i] = $weekMissedCount[$i];    
+         }else{
+             $weekMissedArr[$i] = 0;    
+         }
+     }
 
+
+
+
+
+        return view('home',compact('queueArr','servedArr','missedArr','todayQueuesCount',
+        'todayServedCount','todayMissedCount','weekArr','weekServedArr','weekMissedArr',
+        'usersCount','departmentsCount','servicesCount','countersCount'));
     }
+
+       
+    
 }

@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
 use Exception;
 use Illuminate\Http\Request;
-
+use Datatables;
 class DepartmentController extends Controller
 {
     /**

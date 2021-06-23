@@ -34,7 +34,7 @@
        <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{route('admin.queues.index')}}">
         <svg class="c-sidebar-nav-icon">
-          <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-group')}}"></use>
+          <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-list-high-priority')}}"></use>
         </svg> {{__('Queues')}}
         </a>
         </li>
@@ -42,15 +42,15 @@
        <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{route('admin.departments.create')}}">
         <svg class="c-sidebar-nav-icon">
-          <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-group')}}"></use>
+          <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-institution')}}"></use>
         </svg> {{__('Department')}}
         </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{route('admin.services.index')}}">
-            <svg class="c-sidebar-nav-icon">
-              <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-truck')}}"></use>
-            </svg> Services
+              <svg class="c-sidebar-nav-icon">
+                <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-truck')}}"></use>
+              </svg> Services
             </a>
         </li>
         <li class="c-sidebar-nav-item">

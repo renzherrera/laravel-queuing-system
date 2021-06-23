@@ -124,7 +124,7 @@
                                         
                                   
                                 </div>
-                                <audio id="audio" src="{{ asset("storage/sounds/ding.mp3")}}" autoplay="0" ></audio>
+                                <audio id="audio" src="{{ asset("storage/sounds/ding.mp3")}}" autoplay="false" ></audio>
                                 <div class="col-md-6 text-center">
                                     <button wire:click.prevent="callAgain()" onclick="replaySound();" id="callAgainBtn" class="btn btn-warning call-btn font-weight-bold text-white" @if (!$disableButton)
                                     disabled
