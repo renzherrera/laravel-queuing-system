@@ -167,21 +167,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
         <div class="card">
             <div class="card-body">
             <div class="d-flex justify-content-between">
             <div>
             <h4 class="card-title mb-0">Queues</h4>
+            
             {{-- <div class="small text-muted">September 2019</div> --}}
          
             </div>
@@ -189,12 +180,20 @@
            
 
             <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                <div class="btn-group ">
+                    <button class="btn btn-transparent dropdown-toggle p-0 text-dark" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg class="c-icon text-dark">
+                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bar-chart')}}"></use>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" onclick="changeline();">Line Chart</a><a class="dropdown-item" href="#" onclick="changebar();">Bar Chart</a></div>
+                </div>
             <div class="btn-group btn-group-toggle mx-3" data-toggle="buttons">
             <label class="btn btn-outline-secondary">
-            <input id="line" type="radio" name="options" autocomplete="off" onchange="changeline();"> Day
+            <input id="line" type="radio" name="options" autocomplete="off" onchange="weekData();"> Day
             </label>
             <label class="btn btn-outline-secondary active">
-            <input id="bar" type="radio" name="options" autocomplete="off" onchange="changebar();" checked=""> Month
+            <input id="bar" type="radio" name="options" autocomplete="off"  checked="" onchange="monthData();"> Month
             </label>
             <label class="btn btn-outline-secondary">
             <input id="option3" type="radio" name="options" autocomplete="off" onchange="dayChart()"> Year
@@ -233,7 +232,6 @@
         </div>
         
 
- <script src="https://coreui.io/demo/free/3.4.0/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js" integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -244,14 +242,17 @@
 
     line.addEventListener('click', changeline);
     bar.addEventListener('click', changebar);
-var datas =  <?php echo json_encode($queueArr)?>;
-var servedData =  <?php echo json_encode($servedArr)?>;
-var missedData =  <?php echo json_encode($missedArr)?>;
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
+
+    var monthsLabel = ['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sept','Oct','Nov','Dec'];
+    var weekLabel = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
+    var datas =  <?php echo json_encode($queueArr)?>;
+    var servedData =  <?php echo json_encode($servedArr)?>;
+    var missedData =  <?php echo json_encode($missedArr)?>;
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels:['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sept','Oct','Nov','Dec'],
+        labels: monthsLabel,
 
         datasets: [{
             label: 'Total Queued',
@@ -317,6 +318,20 @@ var myChart = new Chart(ctx, {
         
     }
 });
+    function weekData() {
+        myChart.data.datasets[0].data = {{json_encode($weekArr)}};
+        myChart.data.datasets[1].data = {{json_encode($weekServedArr)}};
+        myChart.data.datasets[2].data = {{json_encode($weekMissedArr)}};
+        myChart.data.labels = weekLabel;
+        myChart.update();
+    }
+    function monthData() {
+        myChart.data.datasets[0].data = datas;
+        myChart.data.datasets[1].data = servedData
+        myChart.data.datasets[2].data = missedData;
+        myChart.data.labels = monthsLabel;
+        myChart.update();
+    }
 
     function changeline() {
         const updatetype ='line';
@@ -329,9 +344,7 @@ var myChart = new Chart(ctx, {
         myChart.update();
     }
 
-    function dayChart(){
-    };
-
+  
 
 
 
@@ -363,7 +376,7 @@ var cardChart = new Chart(ctx, {
        
             ],
             borderColor: [
-                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 0.7)',
          
             ],
             borderWidth: 1,
@@ -425,7 +438,7 @@ var cardChart = new Chart(ctx, {
        
             ],
             borderColor: [
-                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 0.7)',
          
             ],
             borderWidth: 1,
@@ -492,7 +505,7 @@ var cardChart = new Chart(ctx, {
        
             ],
             borderColor: [
-                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 0.7)',
          
             ],
             borderWidth: 1,

@@ -23,7 +23,7 @@
           
             @endif
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i>{{__('List of Queues')}}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i><h4>{{__('List of Queues')}}</h4></div>
                         <div class="card-body">
                                 @livewire('queues-table')
                         

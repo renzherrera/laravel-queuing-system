@@ -195,7 +195,7 @@ class HomeController extends Controller
          }
 
 
-     //WEEEEEEEEEEK QUEUE 
+     //MISSED QUEUE 
 
 
      $weekMissed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
@@ -222,6 +222,96 @@ class HomeController extends Controller
              $weekMissedArr[$i] = 0;    
          }
      }
+
+
+
+
+
+     
+         //YEAR QUEUE 
+
+
+        //  $yearQueue = Queue::select(DB::raw('count(queue_id) as `data`'),DB::raw("CONCAT_WS('-',MONTH(created_at),YEAR(created_at)) as monthyear"))
+        //  ->groupby('monthyear')
+        //  ->get();
+ 
+        //  $yearmcount = [];
+        //  $yearArr = [0,0,0,0,0];
+         
+        //  foreach ($yearQueue as $key => $value) {
+        //      $yearmcount[(int)$key] = count($value);
+        //  }
+         
+        //  for($i = 1; $i <= 30; $i++){
+        //      if(!empty($yearmcount[$i])){
+        //          $yearArr[$i] = $yearmcount[$i];    
+        //      }else{
+        //          $yearArr[$i] = 0;    
+        //      }
+        //  }
+        //  dd($yearQueue);
+
+
+         
+    //      //SERVED QUEUE 
+
+
+         
+    //      $weekServed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+    //      ->where('served','!=', null)
+    //      ->where('missed','=', false)
+         
+    //      ->get()
+    //      ->groupBy(function($date) {
+    //         //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+    //         return Carbon::parse($date->created_at)->format('w'); // grouping by months
+    //     });
+ 
+ 
+ 
+    //      $weekServeCount = [];
+    //      $weekServedArr = [0,0,0,0,0,0,0];
+         
+    //      foreach ($weekServed as $key => $value) {
+    //          $weekServeCount[(int)$key] = count($value);
+    //      }
+         
+    //      for($i = 1; $i <= 6; $i++){
+    //          if(!empty($weekServeCount[$i])){
+    //              $weekServedArr[$i] = $weekServeCount[$i];    
+    //          }else{
+    //              $weekServedArr[$i] = 0;    
+    //          }
+    //      }
+
+
+    //  //MISSED QUEUE 
+
+
+    //  $weekMissed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+    //  ->where('missed','=', true)
+    //  ->get()
+    //  ->groupBy(function($date) {
+    //     //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+    //     return Carbon::parse($date->created_at)->format('w'); // grouping by months
+    // });
+
+
+
+    //  $weekMissedCount = [];
+    //  $weekMissedArr = [0,0,0,0,0,0,0];
+     
+    //  foreach ($weekMissed as $key => $value) {
+    //      $weekMissedCount[(int)$key] = count($value);
+    //  }
+     
+    //  for($i = 1; $i <= 6; $i++){
+    //      if(!empty($weekMissedCount[$i])){
+    //          $weekMissedArr[$i] = $weekMissedCount[$i];    
+    //      }else{
+    //          $weekMissedArr[$i] = 0;    
+    //      }
+    //  }
 
 
 

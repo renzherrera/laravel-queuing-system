@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\QueueCalled;
 use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Livewire\DepartmentsTable;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,26 +24,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
 
-    return view('welcome');
+//     return view('welcome');
 
-});
+// });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware'=> 'auth'], function(){
     Route::group(['prefix' => 'admin', 'as'=> 'admin.'],function(){
+        Route::get('admin/departments/departments-pdf',[DepartmentsTable::class,'createPDF'])->name('departments.pdf');
         Route::get('displays/departments', [ClientDisplayController::class, 'showDepartments'])->name('displays.departments');
         Route::get('admin.displays/services/{department}', [ClientDisplayController::class, 'showServices'])->name('displays.services');
         Route::post('admin.displays/services/{service}/ticket-details/processing', [ClientDisplayController::class, 'storeQueue'])->name('displays.store');
         Route::post('admin.displays/services/{service}/ticket-details', [ClientDisplayController::class, 'getTicketDetails'])->name('displays.ticket');
+
          Route::resource('pages', PageController::class);
          Route::resource('departments', DepartmentController::class);
          Route::resource('services', ServiceController::class);

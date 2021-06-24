@@ -3,8 +3,29 @@
 @section('content')
 <div class="container-fluid">
     <div class="fade-in">
+        
         <div class="row">
+            
              <div class="col-md-12">
+                @if ($message = Session::get('foreignError'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Oops!</strong> Some data are related to this department, you are not allowed to delete it.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                @endif
+
+                <div class="card">
+                    <div class="card-header"><i class="fa fa-align-justify"></i><h4>{{__('List of Departments')}}</h4></div>
+
+                    <div class="card-body">
+
+                            @livewire('departments-table')
+                    
+                    </div>
+                </div>
+                
                 @if ($message = Session::get('storeSuccess'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Success!</strong>  New Department added.
@@ -48,22 +69,7 @@
 
                      
                     </div>
-                    @if ($message = Session::get('foreignError'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Oops!</strong> Some data are related to this department, you are not allowed to delete it.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                    @endif
-
-                    <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i>{{__('List of Departments')}}</div>
-                        <div class="card-body">
-                                @livewire('departments-table')
-                        
-                        </div>
-                    </div>
+                   
                    
 
 

@@ -1,5 +1,29 @@
 
 <div>
+    <form action="{{route('admin.departments.pdf',$status)}}">
+    <div class="row ">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Filter by: Status</label>
+                <select class="form-control"  wire:model="status" name="status" id="status">
+                  <option value="3">-- Select category</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-1" >
+            <div class="form-group">
+                <label for="">Generate</label>
+ 
+                <button type="submit" class="btn btn-md btn-primary  my-auto form-control" >PDF</button>
+
+            </div>
+        </div>
+    </div>
+   
+</form>
+         
 
     <table class="table table-responsive-lg table-striped" >
                       
