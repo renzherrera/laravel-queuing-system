@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Livewire\DepartmentsTable;
+use App\Http\Livewire\QueuesTable;
+use App\Http\Livewire\ServicesTable;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +42,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['middleware'=> 'auth'], function(){
     Route::group(['prefix' => 'admin', 'as'=> 'admin.'],function(){
         Route::get('admin/departments/departments-pdf',[DepartmentsTable::class,'createPDF'])->name('departments.pdf');
+        Route::get('admin/queues/queues-pdf',[QueuesTable::class,'queuesPDF'])->name('queues.pdf');
+        Route::get('admin/services/services-pdf',[ServicesTable::class,'servicesPDF'])->name('services.pdf');
         Route::get('displays/departments', [ClientDisplayController::class, 'showDepartments'])->name('displays.departments');
         Route::get('admin.displays/services/{department}', [ClientDisplayController::class, 'showServices'])->name('displays.services');
         Route::post('admin.displays/services/{service}/ticket-details/processing', [ClientDisplayController::class, 'storeQueue'])->name('displays.store');

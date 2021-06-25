@@ -41,14 +41,7 @@
                       <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                   </svg> Display Queue
                   </a>
-              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
-              <svg class="c-icon mr-2">
-                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-list-high-priority"></use>
-              </svg> {{ __('Queue View') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-              @csrf
-            </form>
+           
 
           </div>
         </li>

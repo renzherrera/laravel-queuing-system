@@ -1,61 +1,43 @@
 
 <div>
+    <form action="{{route('admin.queues.pdf',$status)}}">
+
     <div class="row ">
         <div class="col-md-3">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Filter by: Service</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>-- Select Department</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <select class="form-control" id="service" name="service" wire:model="service">
+                  <option value="x">-- Select Service</option>
+                  @foreach ($services as $serviceItem)
+                  <option value="{{$serviceItem->id}}">{{$serviceItem->name}}</option>
+                  @endforeach
                 </select>
               </div>
         </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Filter by: Status</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>-- Select category</option>
-                  <option value="1">Active</option>
-                  <option value="0">Inactive</option>
-                </select>
-              </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Filter by: User</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>-- Select category</option>
-                  <option value="1">Active</option>
-                  <option value="0">Inactive</option>
-                </select>
-              </div>
-        </div>
-
-        <div class="col-md-2">
+        
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">From</label>
-                <input class="form-control" id="date-input" type="date" name="date-input" placeholder="date">
+                <input class="form-control" id="date-input" type="date" name="fromDate" id="fromDate" wire:model="fromDate" placeholder="date">
               </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">To</label>
-                <input class="form-control" id="date-input" type="date" name="date-input" placeholder="date">
+                <input class="form-control" id="date-input" type="date" name="toDate" wire:model="toDate" placeholder="date">
               </div>
         </div>
         <div class="col-md-1 " >
             <div class="form-group">
                 <label for="">Generate</label>
 
-                <a href="{{route('admin.departments.pdf')}}" class="btn btn-md btn-primary  my-auto form-control" >PDF</a>
+                <button type="submit" class="btn btn-md btn-primary  my-auto form-control" >PDF</button>
+
             </div>
 
         </div>
     </div>
-
+    </form>
 
 
     <table class="table table-responsive-lg table-striped" >
@@ -82,7 +64,7 @@
         <td>{{$queue->created_at->format('h:i:s A')}}</td>
         <td>{{$queue->created_at->format('m-d-Y')}}</td>
         @if ($queue->called == true)
-        <td class="font-weight-semibold">Called &nbsp;<span class="badge badge-info">{{$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
+        <td class="font-weight-semibold">&nbsp;<span class="badge badge-info">{{'Called ' .$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
         
         @else
         <td><span class="badge badge-warning">Waiting</span></td>

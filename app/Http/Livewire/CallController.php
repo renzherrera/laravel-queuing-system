@@ -30,9 +30,12 @@ class CallController extends Component
             $userCounter = User::with('counters')
             ->where('id','=', Auth::user()->id)
             ->first();
+            $service_id = $userCounter->counters->services->id;
             
               //Waiting ON QUEUES
             $waitingQueues = Queue::with('getServiceRelation')
+            ->where('service_id', '=', $service_id)
+
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
@@ -42,6 +45,8 @@ class CallController extends Component
             //SERVED TODAY
             $queueServed = Queue::with('getServiceRelation')
             ->select('queue_id')
+            ->where('service_id', '=', $service_id)
+
             ->where('called', '=', true)
             ->where('missed', '=', false)
             ->where('served', '!=', null)
@@ -51,6 +56,7 @@ class CallController extends Component
              //get all missed today
              $missed = Queue::with('getServiceRelation')
              ->select('queue_id')
+            ->where('service_id', '=', $service_id)
              ->where('called', '=', true)
              ->where('missed', '=', true)
              ->where('served', '=', null)
@@ -62,12 +68,16 @@ class CallController extends Component
              $checkCallCount = Call::select('call_id')->count();
              // GET FIRST QUEUE WHO HAS NOT CALLED AND NOT MISSED
             $firstqueue = Queue::with('getServiceRelation')
+            ->where('service_id', '=', $service_id)
+
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->first();
         //    CHECK QUEUE WHO ARE ALREADY CALLED BUT NOT YET MISSED OR SERVED
             $calledqueue = Queue::with('getServiceRelation')
+            ->where('service_id', '=', $service_id)
+
             ->where('called', '=', true)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
@@ -112,10 +122,13 @@ class CallController extends Component
     public function call(Request $request) {
             $this->disableButton = true;
 
-
-             
-
+            // GET USER DETAILS AND COUNTER 
+            $userCounter = User::with('counters')
+            ->where('id','=', Auth::user()->id)
+            ->first();
+            $service_id = $userCounter->counters->services->id;
             $queue = Queue::with('getServiceRelation')
+            ->where('service_id', '=', $service_id)
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
@@ -123,12 +136,16 @@ class CallController extends Component
             
     
             $queues = Queue::where('called', '=', false)
+            ->where('service_id', '=', $service_id)
+
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->get();
 
                // check if there are no skipped queue
                $checkQueue = Queue::where('missed','=', false)
+            ->where('service_id', '=', $service_id)
+
               ->where('called', '=', true)
                ->where('served','=', null)
                ->where('created_at','>=', Carbon::today())

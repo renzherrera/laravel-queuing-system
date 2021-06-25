@@ -86,11 +86,11 @@ h4{
             <tr style="line-height:28px;">
                 <td>{{$department->id}}</td>
                 <td>{{$department->department_name}}</td>
-                @if ($department->is_active = 0)
+             
+               @if($department->is_active)
                 <td>Active</td>
                 @else
-                <td>Inactive</td>
-                    
+                <td style="color: red;">Inactive</td>
                 @endif
             </tr>
         </tbody>

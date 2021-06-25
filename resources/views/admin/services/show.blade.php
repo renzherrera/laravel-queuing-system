@@ -15,7 +15,6 @@
                   </div>
                 
                 @endif
-            <a  class="btn btn-xl btn-info mb-2 ml-1" href="{{route('admin.services.create')}}">Create New Service</a>
             @include('sweetalert::alert')
             @if ($message = Session::get('deleteSuccess'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

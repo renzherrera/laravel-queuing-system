@@ -1,23 +1,27 @@
 
 <div>
+    <a  class="btn btn-xl btn-info mb-2 ml-1" href="{{route('admin.services.create')}}">Create New Service</a>
+    <a  class="btn btn-xl btn-warning mb-2 ml-1" href="{{route('admin.services.create')}}">Transaction Reports</a>
+
+    <form action="{{route('admin.services.pdf',$departmentId)}}">
     <div class="row ">
         <div class="col-md-5">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Filter by: Department</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>-- Select Department</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <select class="form-control" id="departmentId" wire:model ="departmentId" name="departmentId">
+                  <option value="x">-- Select Department</option>
+                  @foreach ($departments as $department)
+                  <option value="{{$department->id}}">{{$department->department_name}}</option>
+                      
+                  @endforeach
                 </select>
               </div>
         </div>
         <div class="col-md-5">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Filter by: Status</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>-- Select category</option>
+                <select class="form-control" id="status" wire:model="status" name="status">
+                  <option value="x">-- Select status</option>
                   <option value="1">Active</option>
                   <option value="0">Inactive</option>
                 </select>
@@ -27,11 +31,13 @@
             <div class="form-group">
                 <label for="">Generate</label>
 
-                <a href="{{route('admin.departments.pdf')}}" class="btn btn-md btn-primary  my-auto form-control" >PDF</a>
+                <button type="submit" class="btn btn-md btn-primary  my-auto form-control" >PDF</button>
+
             </div>
 
         </div>
     </div>
+</form>
 
     
 

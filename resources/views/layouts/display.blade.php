@@ -6,7 +6,7 @@
 .loader_bg{
     position: fixed;
     z-index: 999999;
-    background: white;
+    background: rgb(13, 48, 119);
     width: 100%;
     height: 100%;
 }
@@ -21,7 +21,7 @@
 
 .loader:before, .loader:after{
     content: '';
-    border: 1em solid #0093f5;
+    border: 1em solid #feffff;
     border-radius: 50%;
     width: 150px;
     height: 150px;
@@ -55,29 +55,94 @@
         <div class="loader"></div>
     
     </div>
-<body class="c-app flex-row align-items-center bg-white" >
-<div class="container">
+    <style>
+        *{
+            padding: 0!important;
+        }
+        body {
+            background:rgb(11,58,151) !important;
+           
+        }
+        .btn-queue{
+            padding: 40px !important;
+            font-size: 25px;
+            width: 25%;
+            border: 0!important;
+        }
+        
+        .btn-title{
+            text-align: center
+        }
+     
+        .logo {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .card-bg{
+            background:rgb(13, 48, 119) !important;
+
+
+        }
+        h2 {
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 40px;
+        }
+        h3{
+            position: relative;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            left: 20%;
+        }
+     
+        </style>
+<body class="c-app flex-row " >
+
+<div class="container-fluid">
+
+    <div class="header-container row align-items-center mb-3">
+        <div class="logo col-md-4 text-center">
+            <img style="width: 220px;" src="{{ asset("storage/images/sf-logo2.png")}}"/>
+        
+        </div>
+        <div class="col-md-8 half">
+            <h2 class="text-white">CIUDAD NING SAN FERNANDO PAMPANGA</h2>
+            <h3 class="text-white">QUEUE MANAGEMENT SYSTEM</h3>
+        </div>
+    </div>
+    
+
     <div class="row justify-content-center">
-        <div class="col-md-12">
-                <div class="card-group">
+    <div class="line"></div>
+       
+        <div class="col-md-10">
+                <div class="card-group card-bg">
+                   
                         @yield('content')
                  </div>
         </div>
     </div>
 </div>
+</div>
+                    
+</div>
+</div>
+</div>
+</div>
 
 <!-- Optional JavaScript -->
 <!-- Popper.js first, then CoreUI JS -->
 <script>
-    setTimeout(function(){
-        $('.loader_bg').fadeToggle();
-        
-        }, 1000);
+setTimeout(function(){
+$('.loader_bg').fadeToggle();
+
+}, 1000);
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
-@livewireScripts
-</body>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
 
+</body>
+@livewireScripts
 </html>

@@ -1,32 +1,21 @@
-@extends('layouts.auth')
+
+@extends('layouts.display')
 
 @section('content')
-<style>
-    .btn-queue{
-        padding: 50px;
-        font-size: 25px;
-        width: 25%;
-    }
-   
-    .btn-title{
-        text-align: center
-    }
-    </style>
-        <div class="card">
-            <div class="card-header text-center"><h1>{{ __('Choose a department') }}</h1></div>
-                <div class="card-body">
-                  
-                        <div class="container text-center">
-                            @foreach ($departments as $department)
-                            @if ($department->is_active)
-                            <a class="btn btn-queue btn-info mb-2 ml-1" href="{{route('admin.displays.services',$department->id)}}">{{$department->department_name}}</a>
-                            @endif
-         @endforeach
-            
-                        </div>  
-                </div>
-        </div>
 
-        </div>
-
+                            <div class="card card-accent-info ">
+                                <div class="card-header  text-center text-dark"><h1 class="p-4">{{ __('Please select a Department') }}</h1></div>
+                                    <div class="card-body p-5">
+                                      
+                                            <div class="container text-center">
+                                                @foreach ($departments as $department)
+                                                @if ($department->is_active)
+                                                <a class="btn btn-queue bg-info text-white mb-2 ml-1 text-uppercase" href="{{route('admin.displays.services',$department->id)}}">{{$department->department_name}}</a>
+                                                @endif
+                                                 @endforeach
+                                
+                                            </div>  
+                                    </div>
+                            </div>
+                    
 @endsection

@@ -2,10 +2,32 @@
 
 @section('content')
 <style>
-  
+     @media print
+    {
+        body * {
+    visibility: hidden;
+  }
+
+  #not-print * {
+    display: none;
+  }
+
+  #to-print, #to-print * {
+    visibility: visible;
+  }
+
+  #to-print {
+    display: block !important;
+    position: absolute;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100%;
+    height: 100%;
+  }
+    }
   .btn-queue{
       font-size: 35px;
-      padding: 10px 55px;
+      padding: 10px 55px !important;
   }
     .btn-title{
         text-align: center
@@ -22,21 +44,30 @@
     .ticket-number{
         font-size: 70px;
         font-weight: bold;
+
     }
     .title{
-        font-size: 55px;
+        font-size: 45px;
         font-weight: 100;
+        margin-top: 20px;
+        letter-spacing: 2px;
     }
     .more-details{
         align-items: center;
         width: 50%;
         position: relative;
-        left: 38%;
         text-transform: uppercase;
+        left: 26%;
         letter-spacing: 1px;
-        font-size: 25px;
+        font-size: 19px !important;
     }
-  
+    h1{
+        margin-top: 10px;
+    }
+    h4{
+        margin-top: -20px;
+    }
+    
   .sweet-alert{
     padding: 0 !important;
   }
@@ -53,7 +84,7 @@
                                 $diff    = $zero->diff($offset);
                                 // echo $diff->format('%a Days, %h Hours, %i Minutes');
                            @endphp
-                            <div class="print-div">
+                            <div class="print-div" id="to-print">
                                 <h2 class="title">TICKET #</h2>
                             <h1 style="margin-top: -90px;" class="ticket-number" >
                             <form action="{{route('admin.displays.store',$service)}}" method="POST">
@@ -74,10 +105,10 @@
                                     {{-- <h3>Estimated waiting time:  {{$diff->format('%h Hours, %i Minutes')}}</h3> --}}
 
                                 </div>
-                                
-                                <button type="submit" class="btn btn-queue btn-info mb-2 mt-5 text-white" onclick="printing()" >GET TICKET</button>
-                        </form>
                              </div>  
+                                
+                                <button type="submit" id="not-print" class="btn btn-queue btn-info mb-5 mt-5 text-white" onclick="printing()" >GET TICKET</button>
+                        </form>
 
                         </div>
 
@@ -90,13 +121,12 @@
 <script>
 
 function printing() {
-  
     window.print();
 
     Swal.fire({
 
     title: 'Printing',
-    html: '<h1 class="bg-success">Ticket # {{$service->default_number + 1}}</h1> <br> <h2>Time created: {{now()->format('g:i:s a')}}</h2>',    
+    html: '<h1 class="bg-success">Ticket # {{$service->prefix}}-{{ $queue->ticket_number + 1 }}</h1> <br> <h4>Time created: {{now()->format('g:i:s a')}}</h4>',    
     imageUrl: '{{ asset('storage/images/printing.gif')}}',
     imageAlt: 'Printer GIF',
     showConfirmButton: false,

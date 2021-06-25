@@ -1,12 +1,12 @@
-@extends('layouts.auth')
+@extends('layouts.display')
 
 @section('content')
 <style>
-    .btn-queue{
-        padding: 50px;
+    /* .btn-queue{
+        padding: 50px !important;
         font-size: 25px;
         width: 25%;
-    }
+    } */
    
     .btn-title{
         text-align: center
@@ -32,18 +32,18 @@
   }
    </style>
 
-        <div id="noprint" class="card">
-            <div class="card-header text-center"><h1>{{ __('Choose service') }}</h1></div>
-                <div class="card-body">
+        <div id="noprint" class="card card-accent-info">
+            <div class="card-header text-center"><h1 class="p-4">{{ __('Choose service') }}</h1></div>
+                <div class="card-body p-5">
                   
-                        <div class="container text-center">
+                        <div class="container-fluid text-center ">
                             @foreach ($services as $service)
                             @if ($service->is_active)
                             <form action="{{route('admin.displays.ticket',$service)}}" method="POST">
                                 @csrf
                                 <input value="{{$service->id}}" type="hidden" name="id">
                                 <input value="{{$service->default_number}}" type="hidden" name="default_number">
-                            <button class="btn btn-queue btn-info mb-2 ml-1" type="submit" onclick="printing()">{{$service->name}}</a>
+                            <button class="btn btn-queue btn-info mb-1 ml-1 text-uppercase" type="submit" onclick="printing()">{{$service->name}}</a>
                             </form>
                             @endif
                             @endforeach
