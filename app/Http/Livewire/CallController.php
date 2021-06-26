@@ -35,11 +35,11 @@ class CallController extends Component
               //Waiting ON QUEUES
             $waitingQueues = Queue::with('getServiceRelation')
             ->where('service_id', '=', $service_id)
-
             ->where('called', '=', false)
             ->where('missed', '=', false)
             ->where('created_at','>=', Carbon::today())
             ->count();
+
 
 
             //SERVED TODAY

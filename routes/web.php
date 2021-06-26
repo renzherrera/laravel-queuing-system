@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\QueueCalled;
 use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Livewire\DepartmentsTable;
 use App\Http\Livewire\QueuesTable;
@@ -57,6 +58,7 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('queues', QueueController::class);
          Route::resource('queues-called', QueueCalled::class);
          Route::resource('calls', CallController::class)->middleware('counter_assigned');
+         Route::resource('settings', SettingsController::class);
     
          
 

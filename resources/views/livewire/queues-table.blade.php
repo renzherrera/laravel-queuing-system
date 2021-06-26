@@ -67,7 +67,7 @@
         <td class="font-weight-semibold">&nbsp;<span class="badge badge-info">{{'Called ' .$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
         
         @else
-        <td><span class="badge badge-warning">Waiting</span></td>
+        <td><span class="badge badge-warning">Not Called</span></td>
         {{-- <td><span class="badge badge-info">{{$averageCompletionTime}}</span></td> --}}
 
 

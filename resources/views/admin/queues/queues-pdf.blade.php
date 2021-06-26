@@ -100,7 +100,7 @@ h4{
                 <span class="badge {{ $queue->updated_at->diffInMinutes($queue->created_at) > 30 ? "badge-danger" : "badge-success" }}">{{'Called '.$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
                 
                 @else
-                <td><span class="badge badge-warning">Waiting</span></td>
+                <td><span class="badge badge-warning">Not Called</span></td>
                 {{-- <td><span class="badge badge-info">{{$averageCompletionTime}}</span></td> --}}
         
         
