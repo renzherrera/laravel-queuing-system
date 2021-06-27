@@ -118,22 +118,27 @@
 </div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if ($queue)
+
+@endif
+
 <script>
 
-function printing() {
-    window.print();
+  function printing() {
+      window.print();
+  
+      Swal.fire({
+  
+      title: 'Printing',
+      html: '<h1 class="bg-success">Ticket # {{$service->prefix}}-{{ !$queue ? $service->default_number + 1 :  $queue->ticket_number + 1 }}</h1> <br> <h4>Time created: {{now()->format('g:i:s a')}}</h4>',    
+      imageUrl: '{{ asset('storage/images/printing.gif')}}',
+      imageAlt: 'Printer GIF',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+  })
+  
+  }
+  
+  </script>
 
-    Swal.fire({
-
-    title: 'Printing',
-    html: '<h1 class="bg-success">Ticket # {{$service->prefix}}-{{ $queue->ticket_number + 1 }}</h1> <br> <h4>Time created: {{now()->format('g:i:s a')}}</h4>',    
-    imageUrl: '{{ asset('storage/images/printing.gif')}}',
-    imageAlt: 'Printer GIF',
-    showConfirmButton: false,
-    allowOutsideClick: false,
-})
-
-}
-
-</script>
 @endsection

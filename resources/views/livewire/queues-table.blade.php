@@ -64,7 +64,7 @@
         <td>{{$queue->created_at->format('h:i:s A')}}</td>
         <td>{{$queue->created_at->format('m-d-Y')}}</td>
         @if ($queue->called == true)
-        <td class="font-weight-semibold">&nbsp;<span class="badge badge-info">{{'Called ' .$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
+        <td class="font-weight-semibold">&nbsp;<span class="badge {{$queue->updated_at->diffInMinutes($queue->created_at) > $settings->overtime ? 'badge-danger' : 'badge-info'}}">{{'Called ' .$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
         
         @else
         <td><span class="badge badge-warning">Not Called</span></td>

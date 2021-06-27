@@ -63,18 +63,18 @@ h4{
     @foreach ($results as $departments)
     <div class="header-container page_break">
             <div class="logo ">
-                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/images/sf-logo.png")}}"/>
+                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
             </div>
             <div class="header-text ">
-                <h2 >Municipality of San Fernando, Pampanga</h2>
-                <h3 >Queueing Management System </h3>
+                <h2>{{$settings->system_name}}</h2>
+                <h3>{{$settings->sub_name}}</h3>
                 <h4 class="title" >List of Departments</h4>
             </div>
     </div>
     <table >
         <tbody>
             <thead>
-                <tr >
+                <tr>
                 <th >Id</th>
                 <th>Name of Department</th>
                 <th>Status</th>

@@ -86,7 +86,7 @@
         h2 {
             font-weight: 800;
             letter-spacing: 1px;
-            font-size: 40px;
+            font-size: 45px;
         }
         h3{
             position: relative;
@@ -102,12 +102,12 @@
 
     <div class="header-container row align-items-center mb-3">
         <div class="logo col-md-4 text-center">
-            <img style="width: 220px;" src="{{ asset("storage/images/sf-logo2.png")}}"/>
+            <img style="width: 220px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
         
         </div>
         <div class="col-md-8 half">
-            <h2 class="text-white">CIUDAD NING SAN FERNANDO PAMPANGA</h2>
-            <h3 class="text-white">QUEUE MANAGEMENT SYSTEM</h3>
+            <h2 class="text-white">{{$settings->system_name}}</h2>
+            <h3 class="text-white">{{$settings->sub_name}}</h3>
         </div>
     </div>
     
@@ -115,9 +115,8 @@
     <div class="row justify-content-center">
     <div class="line"></div>
        
-        <div class="col-md-10">
-                <div class="card-group card-bg">
-                   
+        <div class="col-md-10 pt-5">
+                <div class="card-group card-bg mt-5 ">
                         @yield('content')
                  </div>
         </div>

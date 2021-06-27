@@ -25,13 +25,13 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 .logo {
     margin-bottom: 25px;
-    margin-left: 0;
+    margin-left: 2%;
     position: relative;
 }
 h3{
     font-size: 15px !important;
     position: relative;
-    top: -20% !important;
+    top: -18% !important;
    left: 35% !important;
    font-weight: 100;
    font-family: Arial, Helvetica, sans-serif;
@@ -41,14 +41,14 @@ h3{
 h2{
     font-size: 20px !important;
     position: relative;
-    top: -17% !important;
+    top: -15% !important;
    left: 25% !important;
 
 }
 h4{
     font-size: 18px !important;
     position: relative;
-    top: -17% !important;
+    top: -15% !important;
    left: 40% !important;
    font-weight: 100;
    font-family: Arial, Helvetica, sans-serif;
@@ -63,11 +63,11 @@ h4{
     @foreach ($results as $queues)
     <div class="header-container page_break">
             <div class="logo ">
-                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/images/sf-logo.png")}}"/>
+                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
             </div>
             <div class="header-text ">
-                <h2 >Municipality of San Fernando, Pampanga</h2>
-                <h3 >Queueing Management System </h3>
+                <h2>{{$settings->system_name}}</h2>
+                <h3>{{$settings->sub_name}}</h3>
                 <h4 class="title" >List of Queues</h4>
             </div>
     </div>
@@ -93,11 +93,11 @@ h4{
                 <td>{{$queue->getServiceRelation->prefix .' - '.$queue->ticket_number}}</td>
             
                
-                <td>{{$queue->created_at->format('h:i:s A')}}</td>
-                <td>{{$queue->created_at->format('m-d-Y')}}</td>
+                <td><small>{{$queue->created_at->format('h:i:s A')}}</small></td>
+                <td><small>{{$queue->created_at->format('m-d-Y')}}</small></td>
                 @if ($queue->called == true)
                 <td class="font-weight-semibold"> 
-                <span class="badge {{ $queue->updated_at->diffInMinutes($queue->created_at) > 30 ? "badge-danger" : "badge-success" }}">{{'Called '.$queue->updated_at->diffForHumans($queue->created_at)}}</span></td>
+                <span class="badge {{ $queue->updated_at->diffInMinutes($queue->created_at) > 30 ? "badge-danger" : "badge-success" }}">Called <small>{{ $queue->updated_at->diffForHumans($queue->created_at)}}</small></span></td>
                 
                 @else
                 <td><span class="badge badge-warning">Not Called</span></td>

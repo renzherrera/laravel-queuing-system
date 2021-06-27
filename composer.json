@@ -16,7 +16,8 @@
         "laravel/ui": "^3.3",
         "livewire/livewire": "^2.4",
         "realrashid/sweet-alert": "^4.0",
-        "sopamo/laravel-filepond": "^0.6.2"
+        "sopamo/laravel-filepond": "^0.6.2",
+        "spatie/laravel-medialibrary": "^9.0.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

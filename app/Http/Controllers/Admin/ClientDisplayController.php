@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Queue;
 use App\Models\Service;
+use App\Models\Settings;
 use Carbon\Carbon;
 use ErrorException;
 use Illuminate\Http\Request;
@@ -15,9 +16,11 @@ class ClientDisplayController extends Controller
     //temporary
     public $customerId = 1;
     public $ticketNumber;
+    
     public function showDepartments() {
+        $settings = Settings::first();
         $departments = Department::select('id', 'department_name','is_active')->get();
-        return view('admin.displays.departments',compact('departments'));
+        return view('admin.displays.departments',compact('departments','settings'));
 
     }
 
@@ -29,15 +32,18 @@ class ClientDisplayController extends Controller
     //    $ticketNumber = $queue->max('ticket_number');
             
       
+    $settings = Settings::first();
 
         $services = Service::select('id', 'name','is_active','department_id','default_number','prefix')
         ->where('department_id', '=', $department)
         ->get();
-        return view('admin.displays.services',compact('services'));
+        return view('admin.displays.services',compact('services','settings'));
 
 
     }
     public function getTicketDetails(Service $service) {
+            $settings = Settings::first();
+
         // get first ticketnumber + 1
        
             $queue = Queue::select('queue_id','ticket_number','created_at','service_id')
@@ -57,7 +63,7 @@ class ClientDisplayController extends Controller
 
 
        
-       return view('admin.displays.ticket-details',compact('service','waitingQueue','queue'));
+       return view('admin.displays.ticket-details',compact('service','waitingQueue','queue','settings'));
 
             
     }

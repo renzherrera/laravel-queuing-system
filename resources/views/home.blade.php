@@ -13,6 +13,9 @@
         margin-top: -40px;
         margin-bottom: 10px;
     }
+    .chart-card {
+        box-sizing: border-box;
+    }
 </style>
 <div class="c-body">
     <main class="c-main">
@@ -165,69 +168,122 @@
         </div>
  
 
+    <div class="row">
+
+        <div class=" col-md-8 chart-card">
+            <div class="card">
 
 
-        <div class="card">
-            <div class="card-body">
-            <div class="d-flex justify-content-between">
-            <div>
-            <h4 class="card-title mb-0">Queues</h4>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                        <div>
+                        <h4 class="card-title mb-0">Queues</h4>
+                        
+                        {{-- <div class="small text-muted">September 2019</div> --}}
+                    
+                        </div>
             
-            {{-- <div class="small text-muted">September 2019</div> --}}
-         
-            </div>
-
-           
-
-            <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
-                <div class="btn-group ">
-                    <button class="btn btn-transparent dropdown-toggle p-0 text-dark" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="c-icon text-dark">
-                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bar-chart')}}"></use>
+                    
+            
+                        <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                            <div class="btn-group ">
+                                <button class="btn btn-transparent dropdown-toggle p-0 text-dark" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg class="c-icon text-dark">
+                                        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bar-chart')}}"></use>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" onclick="changeline();">Line Chart</a><a class="dropdown-item" href="#" onclick="changebar();">Bar Chart</a></div>
+                            </div>
+                        <div class="btn-group btn-group-toggle mx-3" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary">
+                        <input id="line" type="radio" name="options" autocomplete="off" onchange="weekData();"> Day
+                        </label>
+                        <label class="btn btn-outline-secondary active">
+                        <input id="bar" type="radio" name="options" autocomplete="off"  checked="" onchange="monthData();"> Month
+                        {{-- </label>
+                        <label class="btn btn-outline-secondary">
+                        <input id="option3" type="radio" name="options" autocomplete="off" onchange="dayChart()"> Year
+                        </label> --}}
+            
+            
+                        </div>
+                        
+                    
+                        <button class="btn btn-primary" type="button">
+                        <svg class="c-icon">
+                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
                         </svg>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" onclick="changeline();">Line Chart</a><a class="dropdown-item" href="#" onclick="changebar();">Bar Chart</a></div>
-                </div>
-            <div class="btn-group btn-group-toggle mx-3" data-toggle="buttons">
-            <label class="btn btn-outline-secondary">
-            <input id="line" type="radio" name="options" autocomplete="off" onchange="weekData();"> Day
-            </label>
-            <label class="btn btn-outline-secondary active">
-            <input id="bar" type="radio" name="options" autocomplete="off"  checked="" onchange="monthData();"> Month
-            </label>
-            <label class="btn btn-outline-secondary">
-            <input id="option3" type="radio" name="options" autocomplete="off" onchange="dayChart()"> Year
-            </label>
+                        </button>
+                        </div>
+                        </div>
+            
+            
+                        {{-- //CHART  --}}
+                        <div class="c-chart-wrapper" style="height:400px; margin:20px position: relative; height:40vh; ">
+                            <canvas id="myChart" height="400px" ></canvas>
+            
+                        </div>
+        
+                   
+        
+        
+            </div>
+        </div>
 
+           
+            
+        </div>
+
+
+        <div class="col-md-4 ">
+            <div class="card ">
+                <div class="card-header">High Traffic <small class="text-muted">[ OVERTIME ]</small></div>
+                <table class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th scope="col">Service</th>
+                        <th scope="col">Overtime Counts</th>
+                        <th scope="col">Counter Counts</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($traffics as $count => $traffics_list)
+                            <tr>
+                                <td>
+                        @foreach ($traffics_list as $traffics)
+
+                               {{$traffics->getServiceRelation->name}} 
+                               @break;
+                        @endforeach
+                    </td>  
+                                <td>{{$traffics_list->count()}} </td>
+                    <td>   {{$traffics->getServiceRelation->getCounterRelation->count()}} </td>
+
+                                @if ($traffics_list->count() > 5)
+                                <td class="text-danger">High</td>
+                                @elseif($traffics_list->count() > 2 && $traffics_list->count() < 5)
+                                <td class="text-warning">Med</td>
+                                @else
+                                <td class="text-success">Low</td>
+                                @endif
+                              </tr>
+                          
+                  @endforeach
+                   
+                   
+                    </tbody>
+                </table>
 
             </div>
             
-           
-            <button class="btn btn-primary" type="button">
-            <svg class="c-icon">
-            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
-            </svg>
-            </button>
-            </div>
-            </div>
-
-
-            {{-- //CHART  --}}
-            <div class="c-chart-wrapper" style="height:400px; margin:20px position: relative; height:40vh; width:80vw">
-                <canvas id="myChart" height="400px" ></canvas>
-
-            </div>
-
-           
-
-
-            </div>
-            
-
-
-
+        </div>
+                
 
         </div>
+
+
+        
         </div>
         </div>
         

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\QueueCalled;
 use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SettingsUploadController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Livewire\DepartmentsTable;
 use App\Http\Livewire\QueuesTable;
@@ -38,6 +39,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
+Route::post('settings-upload',[SettingsUploadController::class,'store']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware'=> 'auth'], function(){
@@ -49,6 +51,8 @@ Route::group(['middleware'=> 'auth'], function(){
         Route::get('admin.displays/services/{department}', [ClientDisplayController::class, 'showServices'])->name('displays.services');
         Route::post('admin.displays/services/{service}/ticket-details/processing', [ClientDisplayController::class, 'storeQueue'])->name('displays.store');
         Route::post('admin.displays/services/{service}/ticket-details', [ClientDisplayController::class, 'getTicketDetails'])->name('displays.ticket');
+         Route::post('admin/settings/save-settings',[SettingsController::class,'update'])->name('settings.update');
+         Route::get('admin/settings',[SettingsController::class,'index'])->name('settings.index');
 
          Route::resource('pages', PageController::class);
          Route::resource('departments', DepartmentController::class);
@@ -58,7 +62,6 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::resource('queues', QueueController::class);
          Route::resource('queues-called', QueueCalled::class);
          Route::resource('calls', CallController::class)->middleware('counter_assigned');
-         Route::resource('settings', SettingsController::class);
     
          
 

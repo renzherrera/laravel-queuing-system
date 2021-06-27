@@ -82,14 +82,14 @@
     </div>
     <div class="col-md-8 no-margin-padding video bg-white" >
         <div class="text-center ">
-            <img class="logo" src="{{ asset("storage/images/sf-logo.png")}}" alt="">
+            <img class="logo" src="{{ asset("storage/logo/" . $settings->logo)}}" alt="">
             <h1 class="ml-5 mt-3">San Fernando City, Pampanga</h1>
             <h4 class="ml-5 mb-3">Municipality</h4>
-          
+        
         </div>
       
         <video class="" autoplay loop muted >
-            <source src="{{ asset("storage/videos/video.mp4")}}" type="video/mp4" />
+            <source src="{{ asset("storage/video/" . $settings->video)}}" type="video/mp4" />
         </video>
         <div class="text-center ">
             <div class="align-items-center">

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 use App\Models\Queue;
 use App\Models\Service;
+use App\Models\Settings;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class QueuesTable extends Component
         $service = $this->service;
         $fromDate = $this->fromDate;
         $toDate = $this->toDate;
+        $settings = Settings::first();
 
         $services = Service::select('id','name')->get();
 
@@ -41,7 +43,7 @@ class QueuesTable extends Component
         $queues = $queues->orderBy('created_at','asc')->paginate(5);
      
 
-        return view('livewire.queues-table', compact('queues','services'));
+        return view('livewire.queues-table', compact('queues','services','settings'));
     }
 
         public function queuesPDF(Request $request)
@@ -49,6 +51,7 @@ class QueuesTable extends Component
         $service = $request->service;
         $fromDate = $request->fromDate;
         $toDate = $request->toDate;
+        $settings = Settings::first();
 
         $queues = Queue::with('getServiceRelation');
         // ->select('services.id', 'services.name', 'departments.department_name,'services.prefix','services.default_number','services.is_active')
@@ -69,7 +72,7 @@ class QueuesTable extends Component
        $results = $queues->chunk(15);
         // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
         view()->share('results',$results);
-        $pdf = PDF::setOptions([ 'isRemoteEnabled' => true])->loadView('admin.queues.queues-pdf', $results);
+        $pdf = PDF::setOptions([ 'isRemoteEnabled' => true])->loadView('admin.queues.queues-pdf', compact('results','settings'));
 
         return $pdf->stream();
     }

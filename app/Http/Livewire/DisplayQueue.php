@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Call;
 use App\Models\Counter;
+use App\Models\Settings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -22,8 +23,10 @@ class DisplayQueue extends Component
 
         ->orderBy('calls.created_at','desc')
         ->get()->groupBy('counter_id');
+
+        $settings = Settings::first();
         
 
-        return view('livewire.display-queue',compact('counters','calls'));
+        return view('livewire.display-queue',compact('counters','calls','settings'));
     }
 }

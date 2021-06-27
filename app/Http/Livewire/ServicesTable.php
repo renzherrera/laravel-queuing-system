@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Counter;
 use App\Models\Department;
 use App\Models\Service;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,6 +21,7 @@ class ServicesTable extends Component
 
     public function render()
     {
+
         $departmentId = $this->departmentId;
         $status = $this->status;
         $departments = Department::select('id','department_name')->get();
@@ -45,6 +47,7 @@ class ServicesTable extends Component
     public function servicesPDF(Request $request){
         $departmentId = $request->departmentId;
         $status = $request->status;
+        $settings = Settings::first();
 
         $services = Service::join('departments','services.department_id','=','departments.id')
         ->select('services.id', 'services.name', 'departments.department_name','services.prefix','services.default_number','services.is_active');
@@ -65,7 +68,7 @@ class ServicesTable extends Component
        $results = $services->chunk(15);
        // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
        view()->share('results',$results);
-       $pdf = PDF::setOptions([ 'isRemoteEnabled' => true])->loadView('admin.services.services-pdf', $results);
+       $pdf = PDF::setOptions([ 'isRemoteEnabled' => true])->loadView('admin.services.services-pdf',compact('results','settings'));
 
        return $pdf->stream();
     }
