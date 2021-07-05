@@ -137,11 +137,8 @@ $('.loader_bg').fadeToggle();
 
 }, 1000);
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+@include('partials.footer')
+
 
 </body>
-@livewireScripts
 </html>

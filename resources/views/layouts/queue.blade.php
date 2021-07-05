@@ -13,9 +13,7 @@
 <!-- Optional JavaScript -->
 <!-- Popper.js first, then CoreUI JS -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
+@include('partials.footer')
 @livewireScripts
 
  

@@ -47,12 +47,12 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right pt-0">
           
-            <div class="dropdown-header bg-light py-2"><strong>Settings</strong></div>
+            {{-- <div class="dropdown-header bg-light py-2"><strong>Settings</strong></div>
             <a class="dropdown-item" href="#">
               <svg class="c-icon mr-2">
                 <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
               </svg> Profile
-            </a>
+            </a> --}}
             <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
               <svg class="c-icon mr-2">
