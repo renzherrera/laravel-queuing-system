@@ -18,8 +18,9 @@ class CreateCountersTable extends Migration
             $table->string('counter_name');
             $table->unsignedBigInteger('service_id')->index()->nullable();
             $table->foreign('service_id')->references('id')->on('services')->onUpdate('cascade')->onDelete('cascade');
-
             $table->boolean('is_active')->default(true);
+            $table->unsignedInteger('counter_number')->unique();
+
         });
     }
 

@@ -30,7 +30,6 @@
         <div class="col-md-1 " >
             <div class="form-group">
                 <label for="">Generate</label>
-
                 <button type="submit" class="btn btn-md btn-primary  my-auto form-control" >PDF</button>
 
             </div>
@@ -58,8 +57,8 @@
         <tr>
         <td>{{$queue->queue_id}}</td>
         <td>{{$queue->getServiceRelation->name}}</td>
-        <td>{{$queue->getServiceRelation->prefix .' - '.$queue->ticket_number}}</td>
-    
+        <td >{{$queue->getServiceRelation->prefix .' - '.  $queue->ticket_number}}</td>
+      
        
         <td>{{$queue->created_at->format('h:i:s A')}}</td>
         <td>{{$queue->created_at->format('m-d-Y')}}</td>

@@ -19,9 +19,9 @@ class CreateQueuesTable extends Migration
             $table->id('queue_id');
             $table->foreignId('service_id')->constrained();
             $table->integer('ticket_number');
-            $table->boolean('called')->default(false);
-            $table->boolean('missed')->default(false);
-
+            $table->timestamp('called');
+            $table->timestamp('missed');
+            // $table->string('status')->default('waiting');
             $table->timestamps();
 
 

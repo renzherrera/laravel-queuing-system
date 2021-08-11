@@ -102,7 +102,6 @@
 
 
 
-
         //VIDEO PREVIEW
     document.getElementById("video")
     .onchange = function(event) {

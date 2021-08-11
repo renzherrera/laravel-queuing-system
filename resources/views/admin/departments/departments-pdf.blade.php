@@ -63,7 +63,7 @@ h4{
     @foreach ($results as $departments)
     <div class="header-container page_break">
             <div class="logo ">
-                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
+                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/logo/OwbUFlIHmlIL1KQqSSq5xMgxXTjqKSmM63YkooYm.png")}}"/>
             </div>
             <div class="header-text ">
                 <h2>{{$settings->system_name}}</h2>

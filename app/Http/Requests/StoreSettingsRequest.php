@@ -26,8 +26,8 @@ class StoreSettingsRequest extends FormRequest
         return [
             'system_name' => ['required'],
             'sub_name' => ['required'],
-            'logo' => ['required'],
-            'video' => ['required'],
+            'logo' => ['nullable'],
+            'video' => ['nullable'],
             'overtime' => ['required'],
 
         ];

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<title>Dashboard | {{settings('system_name')}}</title>
+
 @section('content')
 <style>
     .font-number{
@@ -19,7 +21,7 @@
 </style>
 <div class="c-body">
     <main class="c-main">
-        <div class="container-fluid">
+        <div class="container-fluid mt-4">
             <h2 class="page-title">Dashboard</h2>
             <div class="fade-in">
                 <div class="row ">
@@ -235,7 +237,7 @@
         </div>
 
 
-        <div class="col-md-4 ">
+        {{-- <div class="col-md-4 ">
             <div class="card ">
                 <div class="card-header">High Traffic <small class="text-muted">[ OVERTIME ]</small></div>
                 <table class="table table-borderless">
@@ -277,7 +279,7 @@
 
             </div>
             
-        </div>
+        </div> --}}
                 
 
         </div>

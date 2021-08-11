@@ -44,13 +44,13 @@ class HomeController extends Controller
 
         $todayServedCount = Queue::select('queue_id', 'created_at')
         ->where('served','!=',null)
-        ->where('missed','=',false)
+        ->where('missed','=',null)
         ->where('created_at','>=',Carbon::today())
         ->count();
 
         $todayMissedCount = Queue::select('queue_id', 'created_at')
         ->where('served','=',null)
-        ->where('missed','=',true)
+        ->where('missed','!=',null)
         ->where('created_at','>=',Carbon::today())
         ->count();
        
@@ -82,7 +82,7 @@ class HomeController extends Controller
 
         $queuesServed = Queue::select('queue_id', 'created_at')
         ->where('served','!=', null)
-        ->where('missed','=', 0)
+        ->where('missed','=', null)
         ->get()
         ->groupBy(function($date) {
             //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
@@ -111,7 +111,7 @@ class HomeController extends Controller
 
          $queuesMissed = Queue::select('queue_id', 'created_at')
          ->where('served','=', null)
-         ->where('missed','=', 1)
+         ->where('missed','!=', null)
          ->get()
          ->groupBy(function($date) {
              //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
@@ -170,7 +170,7 @@ class HomeController extends Controller
          
          $weekServed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
          ->where('served','!=', null)
-         ->where('missed','=', false)
+         ->where('missed','=', null)
          
          ->get()
          ->groupBy(function($date) {
@@ -200,7 +200,7 @@ class HomeController extends Controller
 
 
      $weekMissed = Queue::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
-     ->where('missed','=', true)
+     ->where('missed','!=', null)
      ->get()
      ->groupBy(function($date) {
         //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
@@ -226,14 +226,14 @@ class HomeController extends Controller
 
    
 
-     //TRAFFIC COUNTS / OVERTIME
-     $settings = Settings::select('overtime')->first();
+    //  //TRAFFIC COUNTS / OVERTIME
+    //  $settings = Settings::select('overtime')->first();
 
-     $overtime = $settings->overtime * 60;
-     $traffics = Queue::with('getServiceRelation')->whereRaw('TIMEDIFF(updated_at,created_at) > ?')
-     ->setBindings([$overtime])
-     ->where('created_at','>=',Carbon::today())
-     ->get()->groupBy('service_id');
+    //  $overtime = $settings->overtime ? $settings->overtime : * 60;
+    //  $traffics = Queue::with('getServiceRelation')->whereRaw('TIMEDIFF(updated_at,created_at) > ?')
+    //  ->setBindings([$overtime])
+    //  ->where('created_at','>=',Carbon::today())
+    //  ->get()->groupBy('service_id');
 
      
     
@@ -244,7 +244,7 @@ class HomeController extends Controller
 
         return view('home',compact('queueArr','servedArr','missedArr','todayQueuesCount',
         'todayServedCount','todayMissedCount','weekArr','weekServedArr','weekMissedArr',
-        'usersCount','departmentsCount','servicesCount','countersCount','traffics'));
+        'usersCount','departmentsCount','servicesCount','countersCount'));
     }
 
        

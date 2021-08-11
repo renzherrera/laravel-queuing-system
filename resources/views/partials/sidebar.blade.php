@@ -6,10 +6,10 @@
       <svg class="c-sidebar-brand-minimized" width="46" height="46" alt="CoreUI Logo">
         <use xlink:href="assets/brand/coreui.svg#signet"></use>
       </svg> --}}
-      <h4>QMS</h4>
+      <h3><strong>QMS</strong></h3>
     </div>
     <ul class="c-sidebar-nav">
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
           <a class="c-sidebar-nav-link" href="{{route('home')}}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
@@ -76,8 +76,56 @@
         </svg>Settings
         </a>
     </li>
-   
+    @endif --}}
+    <li class="c-sidebar-nav-item"> 
+      <a class="c-sidebar-nav-link" href="{{route('home')}}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+      </svg> Dashboard
+      </a>
+   </li>
+   @if (auth()->user()->counter_id)
+   <li class="c-sidebar-nav-title">{{__('BROADCAST')}}</li>
+
+   <li class="c-sidebar-nav-item">
+       <a class="c-sidebar-nav-link" href="{{route('admin.calls')}}">
+       <svg class="c-sidebar-nav-icon">
+         <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-bullhorn')}}"></use>
+       </svg> Call
+       </a>
+    </li>
     @endif
+    <li class="c-sidebar-nav-item">
+      <a class="c-sidebar-nav-link" href="{{route('admin.counters')}}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-window')}}"></use>
+      </svg> Counter
+      </a>
+    </li>
+    
+    <li class="c-sidebar-nav-item">
+      <a class="c-sidebar-nav-link" href="{{route('admin.departments')}}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-institution')}}"></use>
+      </svg> {{__('Department')}}
+      </a>
+    </li>
+
+    <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{route('admin.services')}}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-truck')}}"></use>
+          </svg> Services
+        </a>
+    </li>
+    <li class="c-sidebar-nav-item">
+      <a class="c-sidebar-nav-link" href="{{route('admin.users')}}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-wc')}}"></use>
+      </svg> Users
+      </a>
+  </li>
+   
 
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>

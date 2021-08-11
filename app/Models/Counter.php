@@ -11,6 +11,7 @@ class Counter extends Model
     public $timestamps = false;
     protected $fillable = [
         'counter_name',
+        'counter_number',
         'service_id',
         'is_active',
     ];
@@ -25,8 +26,8 @@ class Counter extends Model
     }
     
 
-    public function queues()
+    public function calls()
     {
-        return $this->hasMany(Queue::class, 'queue_id', 'queue_id');
+        return $this->belongsTo(Call::class);
     }
 }

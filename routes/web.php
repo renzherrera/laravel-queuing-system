@@ -34,11 +34,11 @@ use Illuminate\Support\Facades\Route;
 
 // });
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+// Auth::routes();
 Route::post('settings-upload',[SettingsUploadController::class,'store']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -55,7 +55,7 @@ Route::group(['middleware'=> 'auth'], function(){
          Route::get('admin/settings',[SettingsController::class,'index'])->name('settings.index');
 
          Route::resource('pages', PageController::class);
-         Route::resource('departments', DepartmentController::class);
+        //  Route::resource('departments', DepartmentController::class);
          Route::resource('services', ServiceController::class);
          Route::resource('counters', CounterController::class);
          Route::resource('users', UserController::class);

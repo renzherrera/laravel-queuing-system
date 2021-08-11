@@ -177,6 +177,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
+        App\Providers\BladeComponentServiceProvider::class,
+
+        
+
     ],
 
     /*

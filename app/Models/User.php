@@ -55,4 +55,8 @@ class User extends Authenticatable
         {
             return $this->hasOne(Counter::class, 'id', 'counter_id');
         }
+        public function calls()
+        {
+            return $this->belongsTo(Call::class,'user_id','id');
+        }
 }

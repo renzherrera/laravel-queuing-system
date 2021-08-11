@@ -32,7 +32,6 @@
    
      
                 <div class="card">
-                    
                     <div class="card-header">
                         @if ($userCounter)
                         <h4 class="text-center call-header">
@@ -140,6 +139,7 @@
                                         Next&nbsp;&nbsp;<svg class="c-icon">
                                             <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-chevron-double-right')}}"></use>
                                           </svg></button>
+                                       
 
                                 </div>
                             </div>

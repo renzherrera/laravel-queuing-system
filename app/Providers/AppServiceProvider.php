@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use ConsoleTVs\Charts\Registrar as Charts;
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +27,9 @@ class AppServiceProvider extends ServiceProvider
         $charts->register([
             \App\Charts\QueueChart::class
         ]);
+
+        Carbon::macro('toFormattedDateTime', function() {
+            return $this->format('F d, Y / h:i A');
+        });
     }
 }   

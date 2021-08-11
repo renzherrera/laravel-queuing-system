@@ -26,6 +26,11 @@ class Service extends Model
     {
         return $this->hasMany(Counter::class, 'service_id', 'id');
     }
+
+    public function departments()
+    {
+        return $this->belongsTo(Department::class,'department_id','id');
+    }
     
 
 }

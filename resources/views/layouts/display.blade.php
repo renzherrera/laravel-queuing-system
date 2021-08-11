@@ -102,12 +102,12 @@
 
     <div class="header-container row align-items-center mb-3">
         <div class="logo col-md-4 text-center">
-            <img style="width: 220px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
+            <img style="width: 220px;" src="{{ asset("storage/logo/" . settings('logo'))}}"/>
         
         </div>
         <div class="col-md-8 half">
-            <h2 class="text-white">{{$settings->system_name}}</h2>
-            <h3 class="text-white">{{$settings->sub_name}}</h3>
+            <h2 class="text-white">{{settings('system_name')}}</h2>
+            <h3 class="text-white">{{settings('sub_name')}}</h3>
         </div>
     </div>
     

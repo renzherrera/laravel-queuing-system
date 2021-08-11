@@ -1,6 +1,5 @@
    <!-- Optional JavaScript -->
  
-   <script src="{{asset('js/coreui.bundle.js')}}"></script>
 
 
    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
@@ -13,5 +12,3 @@
   {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
   
   
-  
-   @livewireScripts

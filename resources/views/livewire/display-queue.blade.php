@@ -36,60 +36,70 @@
             left: 0;
             z-index: 0;
         }
-        .logo{
+        /* .logo{
             height: 100px;
             position: absolute;
             left: 20%;
             top: 0.5%;
-        }
+        } */
         .sub-data {
             font-size: 25px;
             margin-top: -15px;
             font-weight: 100;
         }
      
-      
     </style>
-    <div class="col-md-4 h-100 no-margin-padding top-1 ">
-      
-            <div class="card queue-container">
-                <div class="card-header bg-info text-white" wire:poll.1000ms><i class="fa fa-align-justify"></i> <h1 class=" text-center tr-queue">NOW SERVING</h1></div>
-                        <div class="card-body bg-info ">
-                            <table id="queue-table" class="table table-responsive-sm table-bordered text-white ">
-                                <thead class="th-queue">
+    
+    <div class="col-md-4 h-100 no-margin-padding top-1 "  >
+            <div class="card queue-container" style="overflow:hidden;" >
+                <img style="position: absolute; left: -680px; height:100vh; opacity:1; z-index:2 " src="{{asset('images/sanfernando.jpg')}}" alt="">
+                <div class="bg-primary" style="z-index: 3; height:100vh; width:100vw; position: absolute; opacity:0.9"></div>
+                <div class=" text-white " style="z-index:4" wire:poll><i class="fa fa-align-justify"></i> <h1 class=" text-center tr-queue">NOW SERVING</h1>
+                        <div class="card-body "  style="height:100vh;">
+                            <table id="queue-table" style="z-index: 4;" class="table table-responsive-sm table-bordered text-white ">
+                                <thead class="th-queue ">
                                     <tr>
-                                        <th>Counter #</th>
+                                        <th style="width: 170px">Counter</th>
                                         <th>Ticket #</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($calls as $item)
+                                    @foreach ($counters as $item)
                                     <tr class="tr-queue">
                                         <td>
-                                            {{$item[0]->counter_id}}
+                                            {{$item->counters->counter_number}}
 
-                                            <h2 class="sub-data">({{$item[0]->name}})</h2>
                                         </td>
-                                        <td id="ticket_number" class="" >{{$item[0]->prefix . '-' . $item[0]->ticket_number}}</td>
+                                        @if ($item->counters->status == "active")
+                                        <td  class="card text-white bg-info"  style="margin: 0!important;" ><span style="font-weight: 800"   id="ticket_number" >{{$item->counters->services->prefix.' - '. $item->ticketNumber}}</span>
+                                        </td>
+                                        @else
+                                        <td width="300px" height="100px"><span style="font-weight: 800"   id="ticket_number" >--</span></td>
+
+                                        @endif
                                     </tr>  
                                     @endforeach
                                  
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+
                 </div>
 
     </div>
     <div class="col-md-8 no-margin-padding video bg-white" >
-        <div class="text-center ">
-            <img class="logo" src="{{ asset("storage/logo/" . $settings->logo)}}" alt="">
-            <h1 class="ml-5 mt-3">San Fernando City, Pampanga</h1>
-            <h4 class="ml-5 mb-3">Municipality</h4>
-        
+        <div class="row"  style="height: 110px">
+            <div class="text-center d-flex" style="margin:auto">
+                <img class="logo" style="width:120px; z-index:9999" src="{{ asset("storage/logo/" . settings('logo'))}}" alt="">
+                <h1 class=" mt-3">{{settings('system_name')}}</h1>
+                {{-- <h4 class="ml-5 mb-3">Municipality</h4> --}}
+            </div>
+          
         </div>
-      
+       
         <video class="" autoplay loop muted >
-            <source src="{{ asset("storage/video/" . $settings->video)}}" type="video/mp4" />
+            <source src="{{ asset("storage/video/" . settings('video'))}}" type="video/mp4" />
         </video>
         <div class="text-center ">
             <div class="align-items-center">
@@ -105,7 +115,25 @@
 
 
 </div>
+<script>
+  $('#ticket_number').on("DOMSubtreeModified", function(){
+    setInterval(function()  
+        {
 
+        setTimeout(function()
+        {
+
+        //$(".blink").css("color","rgba(0,0,0,0.1)"); // If you want simply black/white blink of text
+        $("#ticket_number").css("visibility","hidden"); // This is for Visibility of the element  
+
+        },900);
+
+        //$(".blink").css("color","rgba(0,0,0,1)");  // If you want simply black/white blink of text
+        $("#ticket_number").css("visibility","visible");  // This is for Visibility of the element
+        },1000);
+  });
+  
+</script>
 
 
 
