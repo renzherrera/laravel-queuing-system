@@ -107,8 +107,6 @@ class ListCall extends Component
         ->get()
         ->count();
         
-     
-          
             
             //Waiting ON QUEUES
         $waitingQueues = Queue::with('getServiceRelation')
@@ -116,13 +114,19 @@ class ListCall extends Component
         ->where('called', '=', null)
         ->where('missed', '=', null)
         ->where('served', '=', null)
-        ->where('created_at','>=', Carbon::today());
+        ->where('created_at','>=', Carbon::today())->get()->count();
 
-        $limitWaitingQueues = $waitingQueues->limit(5);
-        $waitingQueues = $waitingQueues->get();
+        // $limitWaitingQueues = $waitingQueues->limit(5);
+      
+        $limitedWaiting = Queue::with('getServiceRelation')
+        ->where('service_id', '=', $service_id)
+        ->where('called', '=', null)
+        ->where('missed', '=', null)
+        ->where('served', '=', null)
+        ->where('created_at','>=', Carbon::today())->paginate(5);
 
     
-        return view('livewire.admin.calls.list-call',compact('waitingQueues','limitedCompletedQueue','queueServed','missed','calls','activeTicket','lastCalled','completedQueue','queueCount','nextTicket'));
+        return view('livewire.admin.calls.list-call',compact('waitingQueues','limitedWaiting','limitedCompletedQueue','queueServed','missed','calls','activeTicket','lastCalled','completedQueue','queueCount','nextTicket'));
 
             
     }
@@ -260,10 +264,13 @@ class ListCall extends Component
 
     public function getActiveTicket()
     {
-       return Call::with('queues')->where('user_id',auth()->user()->id)
-        ->where('created_at','>=', Carbon::today())
+       return Call::with('queues')->where('calls.user_id',auth()->user()->id)
+        ->where('calls.created_at','>=', Carbon::today())
         // ->where('counter_id','=', auth()->user()->counter_id)
-        ->orderBy('call_id','desc')
+        ->where('queues.service_id', '=', auth()->user()->counters->services->id)
+
+        ->orderBy('calls.call_id','desc')
+        ->join('queues','queues.queue_id','calls.queue_id')
         ;
     }
 

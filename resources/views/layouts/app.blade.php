@@ -17,8 +17,11 @@
         </main>
     </div>
  {{-- @include('partials.footer') --}}
+ <script src="{{asset('js/coreui.bundle.js')}}"></script>
 
  <script type="text/javascript" src="{{asset('assets/toastr/toastr.min.js')}}"></script>
+
+  
 
  <script>
     window.addEventListener('show-form', event => {
@@ -63,6 +66,10 @@
 
     window.addEventListener('alert', event => {
         toastr.success(event.detail.message, 'Success!');
+    })
+
+    window.addEventListener('error', event => {
+        toastr.error(event.detail.message, 'Error!');
     })
 
     window.addEventListener('info', event => {
@@ -115,7 +122,6 @@
 
  @stack('js')
  @livewireScripts
- <script src="{{asset('js/coreui.bundle.js')}}"></script>
 
 </body>
 </html>

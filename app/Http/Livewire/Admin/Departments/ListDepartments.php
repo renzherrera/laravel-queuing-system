@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin\Departments;
 
 use App\Models\Department;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,23 +11,26 @@ use Livewire\WithPagination;
 class ListDepartments extends Component
 {
     public $department,$departmentIdBeingRemoved,$departmentIdBeingUpdate; //when edit clicked, value of the model will be stored here
-    public $status ='3',$editMode = false;
+    public $status,$editMode = false;
     public $state = [];
+    public $selectPageRows = false, $selectedRows = [] ;
 
     protected $listeners = ['deleteConfirmed' => 'deleteDepartment','updateInfo' => 'updateDepartment'];
     use WithPagination;
     public function render()
     {
-        $status =$this->status;
-        if($status !="3"){
-            $departments = Department::where('is_active','=', $status)
-            ->paginate(5);
-        }else {
-            $departments = Department::paginate(5);
-        }
+            $departments = $this->departments->paginate(5);
          
         return view('livewire.admin.departments.list-departments',compact('departments'));
     }
+
+    public function getDepartmentsProperty() 
+    {
+       return Department::when($this->status, function($query,$status){
+           return $query->where('is_active','=',$status == "true" ? true : false);
+       });
+    }
+
 
     public function addNewDepartment() {
         $this->reset();
@@ -92,4 +96,47 @@ class ListDepartments extends Component
         $department->delete();
         $this->dispatchBrowserEvent('deleted', ['message' => 'Department deleted successfully!']);
     }
+
+    public function updatedSelectPageRows($value)
+    {
+           if($value){
+                $this->selectedRows =  $this->departments->pluck('id')->map(function($id){
+                    return (string) $id;
+                });
+           } else {
+               $this->reset(['selectedRows','selectPageRows']);
+           }
+
+    }
+
+    public function markInactive() {
+
+        Department::whereIn('id', $this->selectedRows)->update(['is_active' => false]);
+		$this->dispatchBrowserEvent('updated', ['message' => 'All selected Department(s) marked as Inactive.']);
+		$this->reset(['selectPageRows', 'selectedRows']);
+
+    }
+    
+    public function markActive() {
+
+        Department::whereIn('id', $this->selectedRows)->update(['is_active' => true]);
+		$this->dispatchBrowserEvent('updated', ['message' => 'All selected Department(s) marked as Inactive.']);
+		$this->reset(['selectPageRows', 'selectedRows']);
+
+    }
+
+    public function deleteSelectedRows() {
+
+        try{
+            Department::whereIn('id',$this->selectedRows)->delete();
+            $this->dispatchBrowserEvent('deleted',['message' => 'Selected Department successfully deleted!']);
+            $this->reset(['selectPageRows','selectedRows']);
+        }catch(Exception $ex){
+            $this->dispatchBrowserEvent('error',['message'=>'Sorry! '. $ex->getMessage()]);
+        }
+       
+
+    }
+
+
 }

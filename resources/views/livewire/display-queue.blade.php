@@ -54,7 +54,7 @@
             <div class="card queue-container" style="overflow:hidden;" >
                 <img style="position: absolute; left: -680px; height:100vh; opacity:1; z-index:2 " src="{{asset('images/sanfernando.jpg')}}" alt="">
                 <div class="bg-primary" style="z-index: 3; height:100vh; width:100vw; position: absolute; opacity:0.9"></div>
-                <div class=" text-white " style="z-index:4" wire:poll><i class="fa fa-align-justify"></i> <h1 class=" text-center tr-queue">NOW SERVING</h1>
+                <div class=" text-white " style="z-index:4" wire:poll.1000ms><i class="fa fa-align-justify"></i> <h1 class=" text-center tr-queue">NOW SERVING</h1>
                         <div class="card-body "  style="height:100vh;">
                             <table id="queue-table" style="z-index: 4;" class="table table-responsive-sm table-bordered text-white ">
                                 <thead class="th-queue ">
@@ -64,19 +64,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                
                                     @foreach ($counters as $item)
-                                    <tr class="tr-queue">
-                                        <td>
+                                    <tr class="tr-queue  text-primary bg-white">
+                                        <td class="">
                                             {{$item->counters->counter_number}}
-
+                                            {{$item->served}}
                                         </td>
+                                    @if ($item->served == null && $item->missed == null)
+                                        
                                         @if ($item->counters->status == "active")
-                                        <td  class="card text-white bg-info"  style="margin: 0!important;" ><span style="font-weight: 800"   id="ticket_number" >{{$item->counters->services->prefix.' - '. $item->ticketNumber}}</span>
+                                        <td  class=""  style="margin: 0!important;" ><span style="font-weight: 800"   id="ticket_number" >{{$item->counters->services->prefix.' - '. $item->ticketNumber}}</span>
                                         </td>
                                         @else
-                                        <td width="300px" height="100px"><span style="font-weight: 800"   id="ticket_number" >--</span></td>
+                                        <td width="min-width: 300px" height="100px"><span style="font-weight: 800"   id="ticket_number" >--</span></td>
 
                                         @endif
+                                    @else
+                                    <td style="min-width: 300px" height="100px"><span style="font-weight: 800"   id="ticket_number" >--</span></td>
+                                    @endif
                                     </tr>  
                                     @endforeach
                                  
@@ -117,20 +123,27 @@
 </div>
 <script>
   $('#ticket_number').on("DOMSubtreeModified", function(){
-    setInterval(function()  
+    // $('#ticket_number').fadeOut(500).fadeIn(500, blink);
+     var timeRun = 0;
+     var interval = setInterval(function()  
         {
+            timeRun += 1;
+            
 
-        setTimeout(function()
-        {
+            myVar =  setTimeout(function()
+                {
 
-        //$(".blink").css("color","rgba(0,0,0,0.1)"); // If you want simply black/white blink of text
-        $("#ticket_number").css("visibility","hidden"); // This is for Visibility of the element  
+                $("#ticket_number").css("color","rgba(255,0,0,0.1)"); // If you want simply black/white blink of text
+                $("#ticket_number").css("visibility","hidden"); // This is for Visibility of the element  
 
-        },900);
+                },900);
 
-        //$(".blink").css("color","rgba(0,0,0,1)");  // If you want simply black/white blink of text
-        $("#ticket_number").css("visibility","visible");  // This is for Visibility of the element
-        },1000);
+                $("#ticket_number").css("color","rgba(255,0,0,1)");  // If you want simply black/white blink of text
+                $("#ticket_number").css("visibility","visible");  // This is for Visibility of the element
+                if(timeRun ==10){
+                clearInterval(interval);
+                 }
+                },1000);
   });
   
 </script>

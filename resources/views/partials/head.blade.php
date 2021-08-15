@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="{{asset('assets/toastr/toastr.min.css')}}">
     <!-- Sweet Alert 2 --->
     <link rel="stylesheet" href="{{asset('assets/sweetalert2/sweetalert2.min.css')}}">
-
+<!-- Checkboxes Styles -->
+    <link rel="stylesheet" href="{{asset('assets/icheck-bootstrap/icheck-bootstrap.min.css')}}">
 
     {{-- <title>{{ settings('system_name') ?? ''}}</title> --}}
     <script src='{{ asset("js/voice.js")}}'></script>

@@ -23,12 +23,18 @@ class DisplayQueue extends Component
 
         // ->orderBy('calls.created_at','desc')
         // ->get()->groupBy('counters.counter_id');
-
-        $counters = Call::leftJoin('queues','calls.queue_id','=','queues.queue_id')
-        ->selectRaw('calls.counter_id, max(calls.queue_id) as queueId ,max(queues.ticket_number)  as ticketNumber')
+        $couunter = Call::has('queues')->get();
+        $counters = Call::has('queues')->join('queues','calls.queue_id','=','queues.queue_id')
+        ->selectRaw('calls.counter_id ,max(queues.ticket_number)  as ticketNumber ')
+        // ->where(function ($query) {
+        //     $query->where('queues.missed', '=', null);
+        //     $query->where('queues.served', '=', null);
+        // })
+        ->where('calls.created_at','>=', Carbon::today())
         ->groupBy('calls.counter_id')->get();
         $settings = Settings::first();
 
+    
 
 
         
@@ -36,6 +42,6 @@ class DisplayQueue extends Component
 
 
 
-        return view('livewire.display-queue',compact('counters','settings'));
+        return view('livewire.display-queue',compact('counters','settings','couunter'));
     }
 }

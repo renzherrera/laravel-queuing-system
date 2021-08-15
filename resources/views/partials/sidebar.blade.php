@@ -78,7 +78,7 @@
     </li>
     @endif --}}
     <li class="c-sidebar-nav-item"> 
-      <a class="c-sidebar-nav-link" href="{{route('home')}}">
+      <a class="c-sidebar-nav-link {{request()->is('/') ? 'c-active' : ''}}" href="{{route('home')}}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
       </svg> Dashboard
@@ -125,7 +125,15 @@
       </svg> Users
       </a>
   </li>
-   
+  <li class="c-sidebar-nav-title">{{__('Preferences')}}</li>
+
+  <li class="c-sidebar-nav-item">
+    <a class="c-sidebar-nav-link" href="{{route('admin.settings.index')}}">
+    <svg class="c-sidebar-nav-icon">
+      <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-settings')}}"></use>
+    </svg>Settings
+    </a>
+</li>
 
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>

@@ -20,16 +20,16 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                      
+                       
                         <form action="{{route('admin.departments.pdf',$status)}}">
                             <div class="row d-flex justify-content-between">
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Filter by: Status</label>
                                         <select class="form-control"  wire:model="status" name="status" id="status">
-                                        <option value="3">-- Select category</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option >-- Select category</option>
+                                        <option value="true">Active</option>
+                                        <option value="false">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
@@ -41,7 +41,26 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 d-flex align-items-end justify-content-end">
+                                 
                                     <div class="form-group ">
+                                        @if ($selectedRows)
+                    
+                                        <div class="btn-group ml-2 mr-3  ">
+                                            <button type="button" class="btn btn-secondary">
+                                              Bulk Action
+                                            <small class="ml-1 badge badge-light ">SELECTED <span class="badge badge-pill badge-primary">{{count($selectedRows)}}</span></small>
+                                            </button>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                              <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu" style="">
+                                              <a class="dropdown-item" wire:click.prevent = "deleteSelectedRows" href="#">Delete Selected</a>
+                                              <a class="dropdown-item" wire:click.prevent = "markActive" href="#">Mark as Active</a>
+                                              <a class="dropdown-item" wire:click.prevent = "markInactive" href="#">Mark as Inactive</a>
+                                              {{-- <a class="dropdown-item" wire:click.prevent = "export" href="#">Export</a> --}}
+                                            </div>
+                                        </div>
+                                        @endif
                                         <button  wire:click ="addNewDepartment" class="btn btn-md btn-primary" type="button" data-toggle="modal" data-target="#departmentModal"> Create Department</button>
                                     </div>
                                 </div>
@@ -53,13 +72,19 @@
                             {{-- <div class="card-header"><i class="fa fa-align-justify"></i><h4>{{__('List of Departments')}}</h4></div> --}}
 
                                 <table class="table table-responsive-sm table-hover table-outline mb-0">
-                                    <thead class="thead-light">
+                                    <thead class="thead-white">
                                     <tr>
                                     {{-- <th class="text-center">
                                     <svg class="c-icon">
                                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-people"></use>
                                     </svg>
                                     </th> --}}
+                                    <th class="">
+                                        <div class="icheck-primary d-inline ml-2">
+                                          <input class="" type="checkbox" value="" name="todo2" id="todoCheck2" wire:model="selectPageRows">
+                                          <label for="todoCheck2"></label>
+                                        </div>
+                                     </th>
                                     <th>Department</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
@@ -74,6 +99,11 @@
                                         {{-- <td class="text-center">
                                             <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
                                         </td> --}}
+                                        <th style="width:10px;" scope="row">
+                                            <div class="icheck-primary d-inline ">
+                                            <input type="checkbox" wire:model = "selectedRows" value="{{ $department->id }}" name="todo2" id="{{$department->id}}">
+                                            <label for="{{$department->id}}"></label>
+                                          </div></th>
                                     <td>
                                     <div>{{$department->department_name}}</div>
                                     <div class="small text-muted">Created: {{$department->created_at->format('F d, Y')}}</div>

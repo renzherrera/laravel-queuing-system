@@ -26,7 +26,7 @@
           <div class="dropdown-menu dropdown-menu-right pt-0">
           
             <div class="dropdown-header bg-light py-2"><strong>Display on Screen</strong></div>
-                <a class="dropdown-item" href="{{route('admin.displays.departments')}}"  target="_blank">
+                <a class="dropdown-item" href="{{route('kiosk.departments')}}"  target="_blank">
                 <svg class="c-icon mr-2">
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                 </svg> Users View
@@ -42,7 +42,7 @@
         </li>
         <li class="c-header-nav-item dropdown">
             <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <div class="c-avatar-img">{{auth()->user()->email}}
+            <div class="c-avatar-img">{{ucwords(auth()->user()->name)}}
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right pt-0">

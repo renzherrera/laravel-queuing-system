@@ -184,7 +184,7 @@
                         <div class="card-header bg-warning content-center">
                             <div class="text-white">
                                 <h4 class="text-white m-2">Waiting</h4>
-                                <h2 class="text-white">{{ count($waitingQueues)}}</h2>
+                                <h2 class="text-white">{{ $waitingQueues}}</h2>
                                 <p>On Queues</p>
                             </div>
                             {{-- <svg class="c-icon c-icon-3xl text-white my-4">
@@ -200,7 +200,7 @@
                             </tr> --}}
                             </thead>
                             <tbody>
-                            @foreach ($waitingQueues as $queue)
+                            @foreach ($limitedWaiting as $queue)
                                 <tr>
                                     <td> <div><strong>{{$queue->getServiceRelation->prefix . ' - ' . $queue->ticket_number}}</strong> </div></td>
                                     <td class="text-right">{{Carbon\Carbon::parse($queue->created_at)->diffForHumans()  }}</td>

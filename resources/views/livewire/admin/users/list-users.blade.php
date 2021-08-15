@@ -22,6 +22,25 @@
                     <div class="col-md-12">
                         <div class=" d-flex align-items-end justify-content-end">
                             <div class="form-group ">
+                                @if ($selectedRows)
+                        
+                                <div class="btn-group ml-2 mr-2 float-left">
+                                    <button type="button" class="btn btn-secondary">
+                                    Bulk Action
+                                    <small class="ml-1 badge badge-light ">SELECTED <span class="badge badge-pill badge-primary">{{count($selectedRows)}}</span></small>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu" style="">
+                                    <a class="dropdown-item" wire:click.prevent = "deleteSelectedRows" href="#">Delete Selected</a>
+                                    <a class="dropdown-item" wire:click.prevent = "markActive" href="#">Mark as Active</a>
+                                    <a class="dropdown-item" wire:click.prevent = "markInactive" href="#">Mark as Inactive</a>
+                                    {{-- <a class="dropdown-item" wire:click.prevent = "export" href="#">Export</a> --}}
+                                    </div>
+                                </div>
+                                @endif
+
                                 <button  wire:click.prevent= "addNewUser" class="btn btn-md btn-primary" type="button">New User</button>
                             </div>
                         </div>
@@ -58,13 +77,19 @@
                             {{-- <div class="card-header"><i class="fa fa-align-justify"></i><h4>{{__('List of Departments')}}</h4></div> --}}
 
                                 <table class="table table-responsive-sm table-hover table-outline mb-0">
-                                    <thead class="thead-light">
+                                    <thead >
                                     <tr>
                                     {{-- <th class="text-center">
                                     <svg class="c-icon">
                                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-people"></use>
                                     </svg>
                                     </th> --}}
+                                    <th class="">
+                                        <div class="icheck-primary d-inline ml-2">
+                                          <input class="" type="checkbox" value="" name="todo2" id="todoCheck2" wire:model="selectPageRows">
+                                          <label for="todoCheck2"></label>
+                                        </div>
+                                    </th>
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -83,6 +108,12 @@
                                         {{-- <td class="text-center">
                                             <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
                                         </td> --}}
+                                    <th style="width:10px;" scope="row">
+                                        <div class="icheck-primary d-inline ">
+                                        <input type="checkbox" wire:model = "selectedRows" value="{{ $user->id }}" name="todo2" id="{{$user->id}}">
+                                        <label for="{{$user->id}}"></label>
+                                        </div>
+                                    </th>
                                     <td> <div>{{$user->id}}</div></td>
                                     <td><div>{{$user->name}}</div></td>
                                     <td>

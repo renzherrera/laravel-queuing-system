@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Users;
 
 use App\Models\Counter;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,15 +13,26 @@ class ListUsers extends Component
 {
     public $editMode = false,$user,$userIdBeingRemoved;
     public $state = ['is_admin' => 0,'is_active' => 1];
+    public $selectPageRows = false, $selectedRows = [];
+
     protected $listeners = ['deleteConfirmed' => 'deleteUser','updateInfo' => 'updateUser'];
     use WithPagination;
     public function render()
     {
         $counters = Counter::select('id','counter_number')->get();
-        $users = User::paginate(5);
+        $users = $this->users->paginate(5);
         return view('livewire.admin.users.list-users',compact('users','counters'));
     }
 
+    public function getUsersProperty() 
+    {
+    //    return Service::when($this->status, function($query,$status){
+    //        return $query->where('status',$status);
+    //    });
+       return User::select('id','name','email','is_active','created_at','is_admin','counter_id');
+
+       
+    }
     public function addNewUser() {
         $this->reset();
         $this->editMode=false;
@@ -87,5 +99,45 @@ class ListUsers extends Component
         $service =  User::findOrFail($this->userIdBeingRemoved);
         $service->delete();
         $this->dispatchBrowserEvent('deleted', ['message' => 'User deleted successfully!']);
+    }
+    public function updatedSelectPageRows($value)
+    {
+           if($value){
+                $this->selectedRows =  $this->users->pluck('id')->map(function($id){
+                    return (string) $id;
+                });
+           } else {
+               $this->reset(['selectedRows','selectPageRows']);
+           }
+
+    }
+
+    public function markInactive() {
+
+        User::whereIn('id', $this->selectedRows)->update(['is_active' => false]);
+		$this->dispatchBrowserEvent('updated', ['message' => 'Selected counter(s) marked as Inactive.']);
+		$this->reset(['selectPageRows', 'selectedRows']);
+
+    }
+    
+    public function markActive() {
+
+        User::whereIn('id', $this->selectedRows)->update(['is_active' => true]);
+		$this->dispatchBrowserEvent('updated', ['message' => 'Selected counter(s) marked as Inactive.']);
+		$this->reset(['selectPageRows', 'selectedRows']);
+
+    }
+
+    public function deleteSelectedRows() {
+
+        try{
+            User::whereIn('id',$this->selectedRows)->delete();
+            $this->dispatchBrowserEvent('deleted',['message' => 'All selected User successfully deleted!']);
+            $this->reset(['selectPageRows','selectedRows']);
+        }catch(Exception $ex){
+            $this->dispatchBrowserEvent('error',['message'=>'Sorry! '. $ex->getMessage()]);
+        }
+       
+
     }
 }
