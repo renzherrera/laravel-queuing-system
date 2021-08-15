@@ -226,10 +226,10 @@ class HomeController extends Controller
 
    
 
-    //  //TRAFFIC COUNTS / OVERTIME
+     //TRAFFIC COUNTS / OVERTIME
     //  $settings = Settings::select('overtime')->first();
 
-    //  $overtime = $settings->overtime ? $settings->overtime : * 60;
+    //  $overtime = $settings->overtime ? $settings->overtime : 0 * 60;
     //  $traffics = Queue::with('getServiceRelation')->whereRaw('TIMEDIFF(updated_at,created_at) > ?')
     //  ->setBindings([$overtime])
     //  ->where('created_at','>=',Carbon::today())

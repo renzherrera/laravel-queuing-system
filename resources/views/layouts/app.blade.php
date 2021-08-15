@@ -1,7 +1,7 @@
 
 
 @include('partials.head')
-
+@stack('styles')
 @livewireStyles
 
 </head>

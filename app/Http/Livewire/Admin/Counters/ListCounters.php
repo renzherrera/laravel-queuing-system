@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
+use PDF;
 
 class ListCounters extends Component
 {
@@ -162,6 +163,23 @@ class ListCounters extends Component
 		$this->dispatchBrowserEvent('updated', ['message' => 'Selected counter(s) marked as Inactive.']);
 		$this->reset(['selectPageRows', 'selectedRows']);
 
+    }
+
+    public function createPDF()
+    {
+        $counters = $this->counters;
+
+        $counters = $counters->whereIn('id',$this->selectedRows)->orderBy('counter_number','asc')->get();
+        // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
+        view()->share('counters',$counters);
+        
+        $pdf = PDF::loadView('pdf.counters-pdf',  
+        compact('counters'))
+        ->setPaper('a4')->setOrientation('landscape');
+       $pdf->setOption('header-html', view('pdf.pdf-header'));
+       if($counters){
+        return $pdf->stream('counters.pdf');
+    }
     }
 
 

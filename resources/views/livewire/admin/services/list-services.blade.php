@@ -1,5 +1,7 @@
 
 <div>
+  {{-- <x-page-loading></x-page-loading> --}}
+
     <title>Services List | {{ settings('system_name') }}</title>
         <div class="c-subheader px-3">
 
@@ -37,7 +39,7 @@
                                 <a class="dropdown-item" wire:click.prevent = "deleteSelectedRows" href="#">Delete Selected</a>
                                 <a class="dropdown-item" wire:click.prevent = "markActive" href="#">Mark as Active</a>
                                 <a class="dropdown-item" wire:click.prevent = "markInactive" href="#">Mark as Inactive</a>
-                                {{-- <a class="dropdown-item" wire:click.prevent = "export" href="#">Export</a> --}}
+                                <a class="dropdown-item" wire:click.prevent = "createPDF" href="#">Export</a>
                                 </div>
                             </div>
                             @endif
@@ -93,6 +95,7 @@
                                     <th class="text-center">Service Name</th>
                                     <th class="text-center">Prefix & Default # </th>
                                     <th class="text-center">Department</th>
+                                    <th class="text-center">Avg Waiting Time</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
                                     {{-- <th>Usage</th>
@@ -121,6 +124,7 @@
                                     <td class="text-center">{{$service->name}}</td>
                                     <td class="text-center">{{$service->prefix . ' - ' . $service->default_number  }}</td>
                                     <td class="text-center">{{$service->department_name}}</td>
+                                    <td class="text-center">{{$service->averageWaiting}}</td>
 
                                     @if ($service->is_active)
                                     <td class="text-center"><span class="badge badge-success">Active</span></td>

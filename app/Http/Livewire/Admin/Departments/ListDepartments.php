@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use PDF;
 class ListDepartments extends Component
 {
     public $department,$departmentIdBeingRemoved,$departmentIdBeingUpdate; //when edit clicked, value of the model will be stored here
@@ -137,6 +137,22 @@ class ListDepartments extends Component
        
 
     }
+    public function createPDF()
+    {
+        $departments = $this->departments;
 
+        $departments = $departments->whereIn('id',$this->selectedRows)->orderBy('department_name','asc')->get();
+        // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
+        view()->share('departments',$departments);
+        
+        $pdf = PDF::loadView('pdf.departments-pdf',  
+        compact('departments'))
+        ->setPaper('a4');
+        // ->setOrientation('landscape');
+       $pdf->setOption('header-html', view('pdf.pdf-header'));
+       if($departments){
+        return $pdf->stream('departments.pdf');
+    }
+    }
 
 }

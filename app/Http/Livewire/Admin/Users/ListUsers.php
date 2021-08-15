@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
+use PDF;
 
 class ListUsers extends Component
 {
@@ -139,5 +140,22 @@ class ListUsers extends Component
         }
        
 
+    }
+
+    public function createPDF()
+    {
+        $users = $this->users;
+
+        $users = $users->whereIn('id',$this->selectedRows)->get();
+        // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
+        view()->share('users',$users);
+        
+        $pdf = PDF::loadView('pdf.users-pdf',  
+        compact('users'))
+        ->setPaper('a4');
+       $pdf->setOption('header-html', view('pdf.pdf-header'));
+       if($users){
+        return $pdf->stream('users.pdf');
+    }
     }
 }

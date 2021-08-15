@@ -36,7 +36,7 @@
                                 <a class="dropdown-item" wire:click.prevent = "deleteSelectedRows" href="#">Delete Selected</a>
                                 <a class="dropdown-item" wire:click.prevent = "markActive" href="#">Mark as Active</a>
                                 <a class="dropdown-item" wire:click.prevent = "markInactive" href="#">Mark as Inactive</a>
-                                {{-- <a class="dropdown-item" wire:click.prevent = "export" href="#">Export</a> --}}
+                                <a class="dropdown-item" wire:click.prevent = "createPDF" href="#">Export</a>
                                 </div>
                             </div>
                             @endif

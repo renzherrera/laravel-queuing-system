@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Admin\Services;
 
 use App\Models\Department;
 use App\Models\Service;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
+use PDF;
+
 
 class ListServices extends Component
 {
@@ -30,9 +33,7 @@ class ListServices extends Component
         $status = $this->status;
         $departments = Department::select('id','department_name')->get();
 
-        $services = Service::join('departments','services.department_id','=','departments.id')
-        ->select('services.id', 'services.name', 'departments.department_name','services.prefix','services.default_number','services.is_active');
-
+        $services = $this->services->paginate(5);
        
         // if($status && $status !="x"){
         //     $services = $services->where('services.is_active',$status);
@@ -54,7 +55,10 @@ class ListServices extends Component
     //        return $query->where('status',$status);
     //    });
        return Service::join('departments','services.department_id','=','departments.id')
-        ->select('services.id', 'services.name', 'departments.department_name','services.prefix','services.default_number','services.is_active');
+       ->join('queues','queues.service_id','=','services.id')
+        ->selectRaw('services.id, services.name, departments.department_name,services.prefix,services.default_number,services.is_active,
+        avg(TIMESTAMPDIFF(minute, queues.created_at,queues.called)) as averageWaiting')
+        ->groupBy('queues.service_id');
 
        
     }
@@ -167,5 +171,20 @@ class ListServices extends Component
 		$this->dispatchBrowserEvent('updated', ['message' => 'Selected counter(s) marked as Inactive.']);
 		$this->reset(['selectPageRows', 'selectedRows']);
 
+    }
+    public function createPDF()
+    {
+        $services = $this->services;
+        $services = $services->whereIn('services.id',$this->selectedRows)->get();
+        // $projects = Project::join('project_images','projects.id','=','project_images.project_id');
+        view()->share('services',$services);
+        
+        $pdf = PDF::loadView('pdf.service-pdf',  
+        compact('services'))
+        ->setPaper('a4');
+       $pdf->setOption('header-html', view('pdf.pdf-header'));
+       if($services){
+        return $pdf->stream('services.pdf');
+    }
     }
 }

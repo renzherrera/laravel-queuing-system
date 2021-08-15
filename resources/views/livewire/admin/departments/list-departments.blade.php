@@ -21,9 +21,8 @@
                 <div class="row">
                     <div class="col-md-12">
                        
-                        <form action="{{route('admin.departments.pdf',$status)}}">
                             <div class="row d-flex justify-content-between">
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Filter by: Status</label>
                                         <select class="form-control"  wire:model="status" name="status" id="status">
@@ -33,14 +32,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-1" >
-                                    <div class="form-group">
-                                        <label for="">Generate</label>
-                                        <button type="submit" class="btn btn-md btn-primary  my-auto form-control" >PDF</button>
-                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6 d-flex align-items-end justify-content-end">
+                                
+                                <div class="col-md-9 d-flex align-items-end justify-content-end">
                                  
                                     <div class="form-group ">
                                         @if ($selectedRows)
@@ -57,7 +50,7 @@
                                               <a class="dropdown-item" wire:click.prevent = "deleteSelectedRows" href="#">Delete Selected</a>
                                               <a class="dropdown-item" wire:click.prevent = "markActive" href="#">Mark as Active</a>
                                               <a class="dropdown-item" wire:click.prevent = "markInactive" href="#">Mark as Inactive</a>
-                                              {{-- <a class="dropdown-item" wire:click.prevent = "export" href="#">Export</a> --}}
+                                              <a class="dropdown-item" wire:click.prevent = "createPDF" href="#">Export</a>
                                             </div>
                                         </div>
                                         @endif
@@ -67,7 +60,6 @@
                             </div>
                         
 
-                        </form>
                         <div class="card">
                             {{-- <div class="card-header"><i class="fa fa-align-justify"></i><h4>{{__('List of Departments')}}</h4></div> --}}
 
@@ -105,7 +97,7 @@
                                             <label for="{{$department->id}}"></label>
                                           </div></th>
                                     <td>
-                                    <div>{{$department->department_name}}</div>
+                                    <div><strong>{{$department->department_name}}</strong> </div>
                                     <div class="small text-muted">Created: {{$department->created_at->format('F d, Y')}}</div>
                                     </td>
                                     @if ($department->is_active)

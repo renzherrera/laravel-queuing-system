@@ -171,8 +171,8 @@
  
 
     <div class="row">
-
-        <div class=" col-md-8 chart-card">
+       
+        <div class=" col-md-7 chart-card">
             <div class="card">
 
 
@@ -237,49 +237,9 @@
         </div>
 
 
-        {{-- <div class="col-md-4 ">
-            <div class="card ">
-                <div class="card-header">High Traffic <small class="text-muted">[ OVERTIME ]</small></div>
-                <table class="table table-borderless">
-                    <thead>
-                    <tr>
-                        <th scope="col">Service</th>
-                        <th scope="col">Overtime Counts</th>
-                        <th scope="col">Counter Counts</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($traffics as $count => $traffics_list)
-                            <tr>
-                                <td>
-                        @foreach ($traffics_list as $traffics)
-
-                               {{$traffics->getServiceRelation->name}} 
-                               @break;
-                        @endforeach
-                    </td>  
-                                <td>{{$traffics_list->count()}} </td>
-                    <td>   {{$traffics->getServiceRelation->getCounterRelation->count()}} </td>
-
-                                @if ($traffics_list->count() > 5)
-                                <td class="text-danger">High</td>
-                                @elseif($traffics_list->count() > 2 && $traffics_list->count() < 5)
-                                <td class="text-warning">Med</td>
-                                @else
-                                <td class="text-success">Low</td>
-                                @endif
-                              </tr>
-                          
-                  @endforeach
-                   
-                   
-                    </tbody>
-                </table>
-
-            </div>
-            
-        </div> --}}
+        <div class="col-md-5">
+          @livewire('home.avg-waiting')
+        </div>
                 
 
         </div>

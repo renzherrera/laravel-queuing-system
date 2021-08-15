@@ -51,15 +51,15 @@ Route::post('kiosk-departments/services/{service}/processing', [KioskService::cl
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware'=> 'auth'], function(){
     Route::group(['prefix' => 'admin', 'as'=> 'admin.'],function(){
-        Route::get('admin/departments/departments-pdf',[DepartmentsTable::class,'createPDF'])->name('departments.pdf');
-        Route::get('admin/queues/queues-pdf',[QueuesTable::class,'queuesPDF'])->name('queues.pdf');
-        Route::get('admin/services/services-pdf',[ServicesTable::class,'servicesPDF'])->name('services.pdf');
+        // Route::get('admin/departments/departments-pdf',[DepartmentsTable::class,'createPDF'])->name('departments.pdf');
+        // Route::get('admin/queues/queues-pdf',[QueuesTable::class,'queuesPDF'])->name('queues.pdf');
+        // Route::get('admin/services/services-pdf',[ServicesTable::class,'servicesPDF'])->name('services.pdf');
         // Route::get('displays/departments', [ClientDisplayController::class, 'showDepartments'])->name('displays.departments');
         // Route::get('admin.displays/services/{department}', [ClientDisplayController::class, 'showServices'])->name('displays.services');
         // Route::post('admin.displays/services/{service}/ticket-details/processing', [ClientDisplayController::class, 'storeQueue'])->name('displays.store');
         // Route::post('admin.displays/services/{service}/ticket-details', [ClientDisplayController::class, 'getTicketDetails'])->name('displays.ticket');
-         Route::post('admin/settings/save-settings',[SettingsController::class,'update'])->name('settings.update');
-         Route::get('admin/settings',[SettingsController::class,'index'])->name('settings.index');
+         Route::post('settings/save-settings',[SettingsController::class,'update'])->name('settings.update');
+         Route::get('settings',[SettingsController::class,'index'])->name('settings.index');
 
         //  Route::resource('pages', PageController::class);
         // //  Route::resource('departments', DepartmentController::class);

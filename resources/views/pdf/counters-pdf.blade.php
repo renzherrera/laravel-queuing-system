@@ -7,89 +7,56 @@
     }
 
 table {
-  border-collapse: collapse;
   width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-top: -150px;
+  margin-top: 40px;
 }
-thead{
-    height: 219px;
-    border: 0.1em solid #ccc;
-}
-th, td {
-  text-align: left;
-  padding: 10px;
+.table{
+            table-layout: fixed !important;
+    
 }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
-
-.logo {
-    margin-bottom: 25px;
-    margin-left: 2%;
-    position: relative;
-}
-h3{
-    font-size: 15px !important;
-    position: relative;
-    top: -18% !important;
-   left: 35% !important;
-   font-weight: 100;
-   font-family: Arial, Helvetica, sans-serif;
-   color: rgb(102, 102, 102);
-   opacity: 0.6;
-}
-h2{
-    font-size: 20px !important;
-    position: relative;
-    top: -15% !important;
-   left: 25% !important;
-
-}
 h4{
-    font-size: 18px !important;
-    position: relative;
-    top: -15% !important;
-   left: 40% !important;
-   font-weight: 100;
-   font-family: Arial, Helvetica, sans-serif;
+  
+   /* font-family: Arial, Helvetica, sans-serif; */
 }
 </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" />
-    <title>QMS | Services</title>
+    <title>QMS | Counters</title>
 </head>
 <body>
 
-    @foreach ($results as $services)
-    <div class="header-container page_break">
-            <div class="logo ">
-                <img style="width: 150px;   margin-left: -10px;" src="{{ asset("storage/logo/" . $settings->logo)}}"/>
-            </div>
-            <div class="header-text ">
-                <h2 >{{$settings->system_name}}</h2>
-                <h3 >{{$settings->sub_name}} </h3>
+    {{-- @foreach ($results as $services) --}}
+            
+            {{-- <div class="header-text ">
+                <h2 >{{settings('system_name')}}</h2>
+                <h3 >{{settings('sub_name')}} </h3>
                 <h4 class="title" >List of Services</h4>
+            </div> --}}
+            <div class="form-row" style="height: 10px">
+                <h4 class="" style="position:fixed; left: 42%; z-index:99999">List of Counters</h4>
+
             </div>
-    </div>
+
     <table class="table table-responsive-lg table-striped" >
                       
         <tbody>
             <thead>
                 <tr>
                 <th>Id</th>
+                <th>Counter</th>
                 <th>Service</th>
-                <th>Department</th>
                 <th>Status</th>
                 </tr>
                 </thead>
       
-                @foreach ($services as $service )
+                @foreach ($counters as $counter )
                 
                 <tr>
-                <td>{{$service->id}}</td>
-                <td>{{$service->name}}</td>
-                <td>{{$service->department_name}}</td>
-                @if ($service->is_active)
+                <td>{{$counter->id}}</td>
+                <td>Counter {{ $counter->counter_number}}</td>
+                <td>{{$counter->services->name}}</td>
+                @if ($counter->is_active)
                   <td>Active</td>
                   @else
                   <td style="color: red">Inactive</td>
@@ -117,7 +84,7 @@ h4{
         
 
       </table>
-      @endforeach
+      {{-- @endforeach --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js" ></script>
   

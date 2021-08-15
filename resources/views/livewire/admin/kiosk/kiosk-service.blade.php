@@ -86,6 +86,8 @@
     {{-- <div class="form-group ">
         <button class="btn btn-md btn-primary" type="button" data-toggle="modal" data-target="#counternModal"> Add New Counter</button>
     </div> --}}
+    {{-- <x-page-loading></x-page-loading> --}}
+
     <div class="fade-in">
         <div class="wrapper d-flex align-items-center" style="height: 100vh;">
                 <div class="m-5 p-5" style="width:100%">
@@ -158,6 +160,8 @@
                                 <input class="form-control border-0 bg-white text-dark " type="text" value="{{now()->format(' F d, Y / g:i:s A ')}}" readonly>  
                                 <label class="text-muted" for="">Total Waiting</label>
                                 <input class="form-control border-0 bg-white text-dark " type="text" value="{{$waitingQueue}}" readonly>  
+                                <label class="text-muted" for="">Estimate Waiting Time (minutes)</label>
+                                <input class="form-control border-0 bg-white text-dark " type="text" value="{{number_format($avgWaiting ,1)}} minute(s)" readonly>  
                                 {{-- <h3>Time Created: {{now()->format('g:i:s a')}}</h3>
                                 <h3>Type: {{$service->name}}</h3>
                                 <h3>On queued: {{$waitingQueue->count()}}</h3> --}}

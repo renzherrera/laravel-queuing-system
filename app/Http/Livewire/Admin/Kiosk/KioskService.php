@@ -12,7 +12,7 @@ class KioskService extends Component
 {
     public $state = [];
     public $department,$service,$editMode = false,$firstQueue,$waitingQueue;
-    public $serviceName, $servicePrefix, $serviceId, $serviceDefault;
+    public $serviceName, $servicePrefix, $serviceId, $serviceDefault,$avgWaiting;
     public function mount(Department $department) {
         // $this->state = $department->toArray();
         $this->department = $department;
@@ -48,6 +48,7 @@ class KioskService extends Component
         ->where('missed', '=', null)
         ->get()->count();
 
+        $this->avgWaiting = $this->getAverageWaitingTime()->averageWaiting;
 
     
 
@@ -59,6 +60,13 @@ class KioskService extends Component
         
     }
 
+    public function getAverageWaitingTime(){
+   $services = Service::join('departments','services.department_id','=','departments.id')
+       ->join('queues','queues.service_id','=','services.id')
+        ->selectRaw('avg(TIMESTAMPDIFF(minute, queues.created_at,queues.called)) as averageWaiting')
+        ->groupBy('queues.service_id')->where('services.id',$this->service->id)->first();
+            return $services;
+    }
     public function storeQueue(){
 
         $queue = Queue::select('queue_id','ticket_number','created_at')
@@ -66,14 +74,14 @@ class KioskService extends Component
         ->where('service_id', '=', $this->service->id)
         ->where('created_at','>=', Carbon::today())
         ->get();
-        if(!$queue){
+        if($queue->count() < 1){
         //get default number for first queues
             Queue::create([
                 'service_id' => $this->service->id,
                 'ticket_number' => $this->service->default_number + 1,
                 // 'customer_id' => $this->customerId,
             ]);
-        } elseif($queue){
+        } elseif($queue->count() > 0){
             Queue::create([
                 'service_id' => $this->service->id,
                 'ticket_number' => $queue->max('ticket_number') + 1,
